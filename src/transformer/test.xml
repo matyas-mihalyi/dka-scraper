@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='iso-8859-2' ?>
+<?xml-stylesheet type='text/css' href='/html/lista.css' ?>
+<link rel='stylesheet' type='text/css' href='/html/lista.css' ?>
+<DKA>
+<identifier> 
+	<URLOfDoc>http://keptar.oszk.hu/000000/000001</URLOfDoc> 
+	<Filename>tk_0001.jpg</Filename>
+        <Thumbnail>http://keptar.oszk.hu/000000/000001/tk_0001_kiskep.jpg</Thumbnail> 
+</identifier>
+<DKAtitle> 
+	<MainTitle>Skizze von den westlichen Theilen der Ödenburger u. Wieselburger Gespanschaften</MainTitle>
+	<UniformTitle>Skizze von den westlichen Theilen der Ödenburger u. Wieselburger Gespanschaften</UniformTitle>
+</DKAtitle>
+<other_title>
+	<OtherTitle>Lage der Neusidler Sees</OtherTitle> 
+	<TitleRefinement>fiktív cím</TitleRefinement>
+</other_title>
+<other_title>
+	<OtherTitle>Fertő-tó (környék) általános térkép, 1780</OtherTitle> 
+	<TitleRefinement>fiktív cím</TitleRefinement>
+</other_title>
+<contributor_corp>
+        <SortOfContributorCorp>1</SortOfContributorCorp>
+        <RoleOfContributorCorp>digitalizálta</RoleOfContributorCorp>
+        <ContributorCorpName>Arcanum Adatbázis Kft.</ContributorCorpName>
+        <PlaceOfContributorCorp>Budapest</PlaceOfContributorCorp>
+        <CountryOfContributorCorp>Magyarország</CountryOfContributorCorp>
+</contributor_corp>
+<contributor_corp>
+        <SortOfContributorCorp>2</SortOfContributorCorp>
+        <RoleOfContributorCorp>elektronikus szerkesztő</RoleOfContributorCorp>
+        <ContributorCorpName>OSZK MEK</ContributorCorpName>
+        <PlaceOfContributorCorp>Budapest</PlaceOfContributorCorp>
+        <CountryOfContributorCorp>Magyarország</CountryOfContributorCorp>
+</contributor_corp>
+<date>
+        <Pevent>felvéve</Pevent>
+        <PdateChar>2007-06-28</PdateChar>
+        <Pdate>2007-06-28</Pdate>
+</date>
+<type>
+        <NameOfType>térkép</NameOfType>
+        <NameOfType>érem</NameOfType>
+</type>
+<subcollection>
+        <NameOfCollection>OSZK kéziratos térképek</NameOfCollection>
+        <CodeInCollection>TK 1</CodeInCollection>
+</subcollection>
+<source>
+        <NameOfSource>OSZK Térképtár</NameOfSource>
+        <URLOfSource>http://www.oszk.hu/hun/konyvtar/szervfel/kulongy/terkeptar/terkeptar_index_hu.htm</URLOfSource>
+</source>
+<topic>
+        <Topic>Térképek, grafikus anyagok</Topic>
+        <Subtopic>Történelmi térképek</Subtopic>
+</topic>
+<subject>
+        <Keyword>általános térkép</Keyword>
+        <SubjectRefinement>műfaj</SubjectRefinement>
+</subject>
+<subject>
+        <Keyword>térkép</Keyword>
+        <SubjectRefinement>műfaj</SubjectRefinement>
+</subject>
+<subject>
+        <Keyword>kartográfia</Keyword>
+        <SubjectRefinement>tárgyszó/kulcsszó</SubjectRefinement>
+</subject>
+<coverage>
+        <CoverageKeyword>Moson vármegye</CoverageKeyword>
+        <CoverageRefinement>földrajzi hely</CoverageRefinement>
+</coverage>
+<coverage>
+        <CoverageKeyword>Sopron vármegye</CoverageKeyword>
+        <CoverageRefinement>földrajzi hely</CoverageRefinement>
+</coverage>
+<coverage>
+        <CoverageKeyword>Fertő-tó</CoverageKeyword>
+        <CoverageRefinement>földrajzi hely</CoverageRefinement>
+</coverage>
+<coverage>
+        <CoverageKeyword>1780</CoverageKeyword>
+        <CoverageRefinement>időszak</CoverageRefinement>
+</coverage>
+<description>
+        <Description>Sopron és Moson megye nyugati része. Fokhálózat nélkül. Tollrajz. Települések nagyság szerint jellel, névvel. Keret nélkül. Proven.: Széchényi F.</Description>
+</description>
+<format>
+        <FormatName>JPEG képállomány</FormatName>
+        <Metadata>N</Metadata>
+        <NoteForMetadata>Az eredeti képre vonatkozó adatok az Amicus-ból</NoteForMetadata>
+</format>
+<format>
+        <FormatName>Zoomify képmegjelenítő</FormatName>
+        <Metadata>N</Metadata>
+</format>
+<quality>
+        <FinestFormat>JPEG képállomány</FinestFormat>
+        <MaxImageSize>1476x2192</MaxImageSize>
+        <FinestResolution>120</FinestResolution>
+</quality>
+<status>
+        <StatusOfRecord>KÉSZ</StatusOfRecord>
+</status>
+<operator>
+        <RoleOfOperator>katalogizálás</RoleOfOperator>
+        <NameOfOperator>Kekk Adrienn</NameOfOperator>
+</operator>
+<operator>
+        <RoleOfOperator>ellenőrzés</RoleOfOperator>
+        <NameOfOperator>Góczán Andrea</NameOfOperator>
+</operator>
+<operator>
+        <RoleOfOperator>ellenőrzés</RoleOfOperator>
+        <NameOfOperator>Simon Jennifer</NameOfOperator>
+</operator>
+</DKA>
