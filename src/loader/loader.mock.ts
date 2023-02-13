@@ -13,6 +13,5 @@ export const mockTopicRelation: TTopic = {
 
 export const mockSubcollectionRelation: TSubCollection = {
   name: "subcollection name",
-  code: "subcollection code",
   link: "subcollection link"
 }

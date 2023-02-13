@@ -31,7 +31,6 @@ export type TTopic = {
 
 export type TSubCollection = {
   name: string,
-  code?: string,
   link: string // links to collection
 }
 

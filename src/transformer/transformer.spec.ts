@@ -208,7 +208,6 @@ describe('transformDocument', () => {
             const expected = [
               {
                 name: 'OSZK kéziratos térképek',
-                code: 'TK 1',
                 link: 'TBD'
               }
             ];

@@ -93,11 +93,8 @@ const getSubCollection = (inputData: TOriginalSubCollection|Array<TOriginalSubCo
       const obj = { 
         name: item.NameOfCollection._text,
         link: 'TBD'
-       } as TSubCollection;
+      } as TSubCollection;
        
-       if (item.CodeInCollection) {
-        obj.code = item.CodeInCollection._text
-      }
       return obj;
     });
   } else {
@@ -106,9 +103,6 @@ const getSubCollection = (inputData: TOriginalSubCollection|Array<TOriginalSubCo
       link: 'TBD'
     } as TSubCollection;
 
-    if (inputData.CodeInCollection) {
-      obj.code = inputData.CodeInCollection._text
-    }
     return [obj];
   }
 }

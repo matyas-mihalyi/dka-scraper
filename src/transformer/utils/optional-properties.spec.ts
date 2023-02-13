@@ -107,12 +107,10 @@ describe('getSubCollection', () => {
       {
         name: 'collection name 1',
         link: 'TBD',
-        code: 'collection code 1'
       },
       {
         name: 'collection name 2',
         link: 'TBD',
-        code: 'collection code 2'
       },
       {
         name: 'collection name 3',
@@ -127,7 +125,6 @@ describe('getSubCollection', () => {
     const expected = [
       {
         name: 'collection name',
-        code: 'collection code',
         link: 'TBD',
       }
     ];
