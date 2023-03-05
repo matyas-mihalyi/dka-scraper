@@ -142,7 +142,7 @@ export const tableColumns = {
       constraint: `REFERENCES ${TableName.Documents}`
     },
     {
-      columnName: 'coverage_id',
+      columnName: 'contributor_id',
       dataType: 'int',
       constraint: `REFERENCES ${TableName.Contributors}`
     }
