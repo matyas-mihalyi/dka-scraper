@@ -8,62 +8,32 @@ export type TSource = {
   url: string
 }
 
-export type TContributor = {
-  name: string,
-  role?: string
-}   
+export interface IDocumentRelation {
+  name: string
+}
 
-export type TCreator = {
-  name: string,
+export interface ICreator extends IDocumentRelation {
   role?: string
 }
-
-export type TTopic = {
-  topic: {
-    name: string,
-    link: string // link az adott topic/subtopichoz
-  },
-  subtopic: {
-    name: string,
-    link: string // link az adott topic/subtopichoz
-  }
-}
-
-export type TSubCollection = {
-  name: string,
-  link: string // links to collection
-}
-
-export type TKeyword = {
-  name: string,
-  link: string // links to documents with keyword
-}
-
-export type TDocumentType = {
-    name: string,
-    link: string
-}
-
-export type TRelationship = TTopic | TSubCollection | TKeyword | TContributor;
 
 export type TJsonData = {
   data: {
     id: string,
     attributes: {
-      type: Array<TDocumentType>,
+      type: Array<IDocumentRelation>,
       img: string,
       title: string
       dates: Array<TDate>,
       description?: string,
       source?: Array<TSource>,
-      creator?: Array<TCreator>
+      creator?: Array<ICreator>
       originalUrl: string
     },
     relationships: {
-      topics: Array<TTopic>,
-      subcollection?: Array<TSubCollection>,
-      coverage?: Array<TKeyword>
-      contributors?: Array<TContributor>
+      topics: Array<IDocumentRelation>,
+      subcollection?: Array<IDocumentRelation>,
+      coverage?: Array<IDocumentRelation>
+      contributors?: Array<ICreator>
     }
   }
 }

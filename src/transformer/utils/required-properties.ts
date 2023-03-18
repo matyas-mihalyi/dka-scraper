@@ -1,17 +1,13 @@
 import { 
   TOriginalIdentifier,
   TOriginalType,
-  TOriginalContributorCorp, 
   TOriginalDates,
-  TOriginalContributor,
   TOriginalTopic,
   } from '../../scraper/scraper.models';
 import { 
-  TContributor, 
+  IDocumentRelation,
   TDate,
-  TTopic,
   TTextData,
-  TDocumentType
   } from '../transformer.types';
 
 export const getId = (identifier: TOriginalIdentifier | Array<TOriginalIdentifier>): string => {
@@ -25,19 +21,17 @@ export const getId = (identifier: TOriginalIdentifier | Array<TOriginalIdentifie
     return text.substring(text.length - 6);
   }
 
-export const getType = (inputData: TOriginalType): Array<TDocumentType> => {
+export const getType = (inputData: TOriginalType): Array<IDocumentRelation> => {
   if (inputData.NameOfType instanceof Array) {
     return inputData.NameOfType.map(type => {
       return {
-        name: type._text,
-        link: 'TBD'
+        name: type._text
       }
     });
   } else {
     return [
       {
         name: inputData.NameOfType._text,
-        link: 'TBD'  
       }
     ];
   }
@@ -87,17 +81,15 @@ export const getOriginalUrl = (id: string): string => {
   return `https://dka.oszk.hu/html/kepoldal/index.phtml?id=${id}`;
 }
 
-export const getTopics = (inputData: Array<TOriginalTopic> | TOriginalTopic): Array<TTopic> => {
+export const getTopics = (inputData: Array<TOriginalTopic> | TOriginalTopic): Array<IDocumentRelation> => {
   if (inputData instanceof Array) {
     return inputData.map(topic => {
       return {
         topic: {
           name: topic.Topic._text,
-          link: `TBD`
         },
         subtopic: {
           name: topic.Subtopic._text,
-          link: `TBD`
         }
       }
     });
@@ -105,11 +97,33 @@ export const getTopics = (inputData: Array<TOriginalTopic> | TOriginalTopic): Ar
     return [{
       topic: {
         name: inputData.Topic._text,
-        link: `TBD`
       },
       subtopic: {
         name: inputData.Subtopic._text,
-        link: `TBD`
+      }
+  }];
+  }
+}
+
+export const getSubTopics = (inputData: Array<TOriginalTopic> | TOriginalTopic): Array<IDocumentRelation> => {
+  if (inputData instanceof Array) {
+    return inputData.map(topic => {
+      return {
+        topic: {
+          name: topic.Topic._text,
+        },
+        subtopic: {
+          name: topic.Subtopic._text,
+        }
+      }
+    });
+  } else {
+    return [{
+      topic: {
+        name: inputData.Topic._text,
+      },
+      subtopic: {
+        name: inputData.Subtopic._text,
       }
   }];
   }

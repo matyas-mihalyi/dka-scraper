@@ -1,4 +1,4 @@
-import { TCreator, TTextData } from '../transformer.types';
+import { ICreator, IDocumentRelation, TTextData } from '../transformer.types';
 import { 
   TOriginalDescription,
   TOriginalSource,
@@ -7,11 +7,7 @@ import {
   TOriginalCreator,
   TOriginalContributor,
   TOriginalContributorCorp } from '../../scraper/scraper.models';
-import { 
-  TKeyword,
-  TSource, 
-  TSubCollection,
-  TContributor } from '../transformer.types';
+import { TSource } from '../transformer.types';
 
 const getDescription = (description: TOriginalDescription | Array<TOriginalDescription>): string => {
   if (description instanceof Array) {
@@ -43,18 +39,16 @@ const getPreferredString = (preferred: string|undefined, secondary: string|undef
   return fallback;
 }
 
-const getKeywords = (coverage: Array<TOriginalCoverage> | TOriginalCoverage): Array<TKeyword> => {
+const getKeywords = (coverage: Array<TOriginalCoverage> | TOriginalCoverage): Array<IDocumentRelation> => {
   if (coverage instanceof Array) {
     return coverage.map(kw => {
       return {
-        name: kw.CoverageKeyword._text,
-        link: `tbd`
+        name: kw.CoverageKeyword._text
       }
     });
   } else {
     return [{
-      name: coverage.CoverageKeyword._text,
-      link: `tbd`
+      name: coverage.CoverageKeyword._text
     }]
   }
 }
@@ -87,37 +81,35 @@ const getSource = (source: TOriginalSource|Array<TOriginalSource>): Array<TSourc
   }
 }
 
-const getSubCollection = (inputData: TOriginalSubCollection|Array<TOriginalSubCollection>): Array<TSubCollection> => {
+const getSubCollection = (inputData: TOriginalSubCollection|Array<TOriginalSubCollection>): Array<IDocumentRelation> => {
   if (inputData instanceof Array) {
     return inputData.map(item => {
       const obj = { 
         name: item.NameOfCollection._text,
-        link: 'TBD'
-      } as TSubCollection;
+      } as IDocumentRelation;
        
       return obj;
     });
   } else {
     const obj = { 
       name: inputData.NameOfCollection._text,
-      link: 'TBD'
-    } as TSubCollection;
+    } as IDocumentRelation;
 
     return [obj];
   }
 }
 
-const getCreator = (inputData: TOriginalCreator | Array<TOriginalCreator>): Array<TCreator> => {
+const getCreator = (inputData: TOriginalCreator | Array<TOriginalCreator>): Array<ICreator> => {
   if (inputData instanceof Array) {
     return inputData.map(creator => {
-      const obj: TCreator = { name: getCreatorName(creator) };
+      const obj: ICreator = { name: getCreatorName(creator) };
       if (creator.RoleOfCreator) {
         obj.role = creator.RoleOfCreator._text;
       }
       return obj;
     });
   }
-  const creator: TCreator = { name: getCreatorName(inputData)}
+  const creator: ICreator = { name: getCreatorName(inputData)}
   if (inputData.RoleOfCreator) {
     creator.role = inputData.RoleOfCreator._text;
   }
@@ -131,10 +123,10 @@ const getCreatorName = (inputData: TOriginalCreator) => {
   return inputData.CreatorFamilyName._text;
 }
 
-const transformContributors = (contributors: TOriginalContributor | Array<TOriginalContributor> ): Array<TContributor> => {
+const transformContributors = (contributors: TOriginalContributor | Array<TOriginalContributor> ): Array<ICreator> => {
   if (contributors instanceof Array) {
     return contributors.map(contributor => {
-      const transformedContributor: TContributor = {
+      const transformedContributor: ICreator = {
         name: concatText([contributor.ContributorFamilyName._text, contributor.ContributorGivenName?._text], ", ")       
       }
       if (contributor.RoleOfContributor) {
@@ -143,7 +135,7 @@ const transformContributors = (contributors: TOriginalContributor | Array<TOrigi
       return transformedContributor
     });
   } else {
-    const transformedContributor: TContributor = {
+    const transformedContributor: ICreator = {
       name: concatText([contributors.ContributorFamilyName._text, contributors.ContributorGivenName?._text], ", ")       
     }
     if (contributors.RoleOfContributor) {
@@ -166,7 +158,7 @@ const concatText = (arr: Array<string|undefined>, separator: string) => {
   }, "");
 }
 
-const transformContributorCorps = (contributorCorps: TOriginalContributorCorp | Array<TOriginalContributorCorp>): Array<TContributor> => {
+const transformContributorCorps = (contributorCorps: TOriginalContributorCorp | Array<TOriginalContributorCorp>): Array<ICreator> => {
   if (contributorCorps instanceof Array) {
     return contributorCorps.map(contributorCorp => {
       return {

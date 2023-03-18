@@ -21,7 +21,6 @@ import { mockCreatorArray, mockCreatorObject, mockCreatorObjectWithoutGivenName,
 const getDescription = getOptionalProperty.description;
 const getSource = getOptionalProperty.source;
 const getSubCollection = getOptionalProperty.subcollection;
-const getKeywords = getOptionalProperty.coverage;
 const getCreator = getOptionalProperty.creator;
 const getContributor = getOptionalProperty.contributor;
 const getContributorCorp = getOptionalProperty.contributor_corp;
@@ -106,15 +105,12 @@ describe('getSubCollection', () => {
     const expected = [
       {
         name: 'collection name 1',
-        link: 'TBD',
       },
       {
         name: 'collection name 2',
-        link: 'TBD',
       },
       {
         name: 'collection name 3',
-        link: 'TBD',
       },
     ];
     const actual = getSubCollection(mockSubCollectionArray);
@@ -125,7 +121,6 @@ describe('getSubCollection', () => {
     const expected = [
       {
         name: 'collection name',
-        link: 'TBD',
       }
     ];
     const actual = getSubCollection(mockSubCollectionObject);

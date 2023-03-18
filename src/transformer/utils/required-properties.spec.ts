@@ -1,4 +1,4 @@
-import { TDocumentType } from '../transformer.types';
+import { IDocumentRelation } from '../transformer.types';
 import {
   getDates,
   getId,
@@ -36,18 +36,15 @@ describe('getId', () => {
 
 describe('getType', () => {
   it('should return an array with the correct type objects', () => {
-    const expected: Array<TDocumentType> = [
+    const expected: Array<IDocumentRelation> = [
       {
         name: 'type 1',
-        link: 'TBD'
       },
       {
         name: 'type 2',
-        link: 'TBD'
       },
       {
         name: 'type 3',
-        link: 'TBD'
       }
     ];
     const actual = getType(mockTypeArray);
@@ -56,10 +53,9 @@ describe('getType', () => {
   });
 
   it('should return an array with one type object if the input has a single type', () => {
-    const expected: Array<TDocumentType> = [
+    const expected: Array<IDocumentRelation> = [
       {
         name: 'type 1',
-        link: 'TBD'
       }
     ];
     const actual = getType(mockTypeObject);
@@ -137,12 +133,10 @@ describe('getTopics', () => {
       {
         topic: {
           name: 'topic',
-          link: 'TBD'
-        },
+          },
         subtopic: {
           name: 'subtopic',
-          link: 'TBD'
-        }
+          }
       }
     ];
     const actual = getTopics(mockTopicObject);
@@ -155,22 +149,18 @@ describe('getTopics', () => {
       {
         topic: {
           name: 'topic',
-          link: 'TBD'
-        },
+          },
         subtopic: {
           name: 'subtopic',
-          link: 'TBD'
-        }
+          }
       },
       {
         topic: {
           name: 'topic 2',
-          link: 'TBD'
-        },
+          },
         subtopic: {
           name: 'subtopic 2',
-          link: 'TBD'
-        }
+          }
       }
     ];
     const actual = getTopics(mockTopicArray);

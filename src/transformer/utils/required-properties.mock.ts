@@ -1,4 +1,4 @@
-import { TOriginalContributor, TOriginalContributorCorp, TOriginalDates, TOriginalIdentifier, TOriginalTopic, TOriginalType } from "../../scraper/scraper.models";
+import { TOriginalDates, TOriginalIdentifier, TOriginalTopic, TOriginalType } from "../../scraper/scraper.models";
 
 export const mockIdentifierObject = {
   URLOfDoc: { _text: 'http://dka.oszk.hu/097900/097928' },

@@ -8,7 +8,7 @@ import {
   getOptionalProperty
 } from "./utils";
 import { TOriginalSchema } from "../scraper/scraper.models";
-import { TContributor, TJsonData } from "./transformer.types";
+import { ICreator, TJsonData } from "./transformer.types";
 
 export function transformDocument (document: TOriginalSchema): TJsonData {
   const inputData = document.dkalista.DKA;
@@ -70,8 +70,8 @@ const assignOptionalProperty = (document: TOriginalSchema, output: any, subkey: 
 }
 
 const assignContributors = (document: TOriginalSchema, optionalProperties: Array<keyof typeof getOptionalProperty>, output: any) => {
-  let contributors: Array<TContributor> = [];
-  let contributorCorps: Array<TContributor> = [];
+  let contributors: Array<ICreator> = [];
+  let contributorCorps: Array<ICreator> = [];
   if (optionalProperties.includes('contributor')) {
     contributors = getOptionalProperty.contributor(document.dkalista.DKA.contributor!);
   }

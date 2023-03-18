@@ -1,17 +1,14 @@
-import { TTopic, TSubCollection } from '../transformer/transformer.types';
+import { IDocumentRelation } from '../transformer/transformer.types';
 
-export const mockTopicRelation: TTopic = {
+export const mockTopicRelation: IDocumentRelation = {
   topic: {
     name: "topic name",
-    link: "topic link" 
   },
   subtopic: {
     name: "subtopic name",
-    link: "subtopic link" 
   }
 };
 
-export const mockSubcollectionRelation: TSubCollection = {
+export const mockSubcollectionRelation: IDocumentRelation = {
   name: "subcollection name",
-  link: "subcollection link"
 }

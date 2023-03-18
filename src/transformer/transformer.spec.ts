@@ -37,12 +37,10 @@ describe('transformDocument', () => {
               const expected = [
                 {
                   name: 'térkép',
-                  link: 'TBD'
-                },
+                  },
                 {
                   name: 'érem',
-                  link: 'TBD'
-                }
+                  }
               ];
               expect(attributes.type).toStrictEqual(expected);
             });
@@ -163,12 +161,10 @@ describe('transformDocument', () => {
               {
                 topic: {
                   name: 'Térképek, grafikus anyagok',
-                  link: 'TBD'
-                },
+                  },
                 subtopic: {
                   name: 'Történelmi térképek',
-                  link: 'TBD'
-                }
+                  }
               }
             ];
             expect(relationships.topics).toStrictEqual(expected);
@@ -183,17 +179,13 @@ describe('transformDocument', () => {
             const expected = [
               {
                 name: 'Moson vármegye',
-                link: 'tbd'
               },
               {
                 name: 'Sopron vármegye',
-                link: 'tbd'
               },{
                 name: 'Fertő tó',
-                link: 'tbd'
               },{
                 name: '1780',
-                link: 'tbd'
               },
             ];
             expect(relationships.coverage).toStrictEqual(expected);
@@ -208,7 +200,6 @@ describe('transformDocument', () => {
             const expected = [
               {
                 name: 'OSZK kéziratos térképek',
-                link: 'TBD'
               }
             ];
             expect(relationships.subcollection).toStrictEqual(expected);
