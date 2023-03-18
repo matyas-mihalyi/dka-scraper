@@ -4,6 +4,7 @@ import {
   getId,
   getImgUrl,
   getOriginalUrl,
+  getSubtopics,
   getTopics,
   getType,
 
@@ -17,6 +18,7 @@ import {
   mockDateObject,
   mockTopicObject,
   mockTopicArray,
+  mockTopicArrayWithDuplicate,
  } from './required-properties.mock';
 
 describe('getId', () => {
@@ -129,41 +131,39 @@ describe('getOriginalUrl', () => {
 
 describe('getTopics', () => {
   it('should return an array with a single topic object if an object is provided', () => {
-    const expected = [
-      {
-        topic: {
-          name: 'topic',
-          },
-        subtopic: {
-          name: 'subtopic',
-          }
-      }
-    ];
+    const expected = [{ name: 'topic' }];
+
     const actual = getTopics(mockTopicObject);
 
     expect(actual).toStrictEqual(expected);
   });
 
   it('should return an array with a single topic object if an object is provided', () => {
-    const expected = [
-      {
-        topic: {
-          name: 'topic',
-          },
-        subtopic: {
-          name: 'subtopic',
-          }
-      },
-      {
-        topic: {
-          name: 'topic 2',
-          },
-        subtopic: {
-          name: 'subtopic 2',
-          }
-      }
-    ];
+    const expected = [{ name: 'topic' }, { name: 'topic 2' }];
     const actual = getTopics(mockTopicArray);
+
+    expect(actual).toStrictEqual(expected);
+  });
+
+  it('should return an array with unique topic objects', () => {
+    const expected = [{ name: 'topic' }];
+    const actual = getTopics(mockTopicArrayWithDuplicate);
+
+    expect(actual).toStrictEqual(expected);
+  });
+});
+
+describe('getSubtopics', () => {
+  it('should return an array with a single topic object if an object is provided', () => {
+    const expected = [{ name: 'subtopic' }];
+    const actual = getSubtopics(mockTopicObject);
+
+    expect(actual).toStrictEqual(expected);
+  });
+
+  it('should return an array with a single topic object if an object is provided', () => {
+    const expected = [{ name: 'subtopic' }, { name: 'subtopic 2' }];
+    const actual = getSubtopics(mockTopicArray);
 
     expect(actual).toStrictEqual(expected);
   });

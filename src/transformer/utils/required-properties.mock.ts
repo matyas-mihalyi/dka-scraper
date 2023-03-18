@@ -50,3 +50,11 @@ export const mockTopicArray: Array<TOriginalTopic> = [
     Subtopic: { _text: 'subtopic 2' }  
   }
 ];
+
+export const mockTopicArrayWithDuplicate: Array<TOriginalTopic> = [
+  mockTopicObject,
+  {
+    Topic: { _text: 'topic' },
+    Subtopic: { _text: 'subtopic 2' }  
+  }
+];

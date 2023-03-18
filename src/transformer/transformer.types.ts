@@ -31,6 +31,7 @@ export type TJsonData = {
     },
     relationships: {
       topics: Array<IDocumentRelation>,
+      subtopics: Array<IDocumentRelation>
       subcollection?: Array<IDocumentRelation>,
       coverage?: Array<IDocumentRelation>
       contributors?: Array<ICreator>

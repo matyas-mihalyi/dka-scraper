@@ -82,49 +82,18 @@ export const getOriginalUrl = (id: string): string => {
 }
 
 export const getTopics = (inputData: Array<TOriginalTopic> | TOriginalTopic): Array<IDocumentRelation> => {
-  if (inputData instanceof Array) {
-    return inputData.map(topic => {
-      return {
-        topic: {
-          name: topic.Topic._text,
-        },
-        subtopic: {
-          name: topic.Subtopic._text,
-        }
+    const data = inputData instanceof Array ? inputData : [inputData];
+    return data.reduce((acc, topic) => {
+      if (acc.filter(t => t.name === topic.Topic._text).length) {
+        return acc;
       }
-    });
-  } else {
-    return [{
-      topic: {
-        name: inputData.Topic._text,
-      },
-      subtopic: {
-        name: inputData.Subtopic._text,
-      }
-  }];
-  }
+      acc.push({ name: topic.Topic._text});
+      return acc;
+    }, [] as Array<IDocumentRelation>);
 }
 
-export const getSubTopics = (inputData: Array<TOriginalTopic> | TOriginalTopic): Array<IDocumentRelation> => {
-  if (inputData instanceof Array) {
-    return inputData.map(topic => {
-      return {
-        topic: {
-          name: topic.Topic._text,
-        },
-        subtopic: {
-          name: topic.Subtopic._text,
-        }
-      }
-    });
-  } else {
-    return [{
-      topic: {
-        name: inputData.Topic._text,
-      },
-      subtopic: {
-        name: inputData.Subtopic._text,
-      }
-  }];
-  }
+
+export const getSubtopics = (inputData: Array<TOriginalTopic> | TOriginalTopic): Array<IDocumentRelation> => {
+  const data = inputData instanceof Array ? inputData : [inputData];
+  return data.map(subTopic => ({ name: subTopic.Subtopic._text }));
 }

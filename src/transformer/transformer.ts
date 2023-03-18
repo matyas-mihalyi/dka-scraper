@@ -5,7 +5,8 @@ import {
   getDates,
   getOriginalUrl,
   getTopics,
-  getOptionalProperty
+  getOptionalProperty,
+  getSubtopics
 } from "./utils";
 import { TOriginalSchema } from "../scraper/scraper.models";
 import { ICreator, TJsonData } from "./transformer.types";
@@ -25,6 +26,7 @@ export function transformDocument (document: TOriginalSchema): TJsonData {
       },
       relationships: {
         topics: getTopics(inputData.topic),
+        subtopics: getSubtopics(inputData.topic)
       }
     }
   };
