@@ -17,24 +17,8 @@ export const getId = (identifier: TOriginalIdentifier | Array<TOriginalIdentifie
   } else {
     urlOfDoc = identifier.URLOfDoc
   }
-    const text = urlOfDoc._text;
-    return text.substring(text.length - 6);
-  }
-
-export const getType = (inputData: TOriginalType): Array<IDocumentRelation> => {
-  if (inputData.NameOfType instanceof Array) {
-    return inputData.NameOfType.map(type => {
-      return {
-        name: type._text
-      }
-    });
-  } else {
-    return [
-      {
-        name: inputData.NameOfType._text,
-      }
-    ];
-  }
+  const text = urlOfDoc._text;
+  return text.substring(text.length - 6);
 }
 
 export const getImgUrl = (identifier: TOriginalIdentifier | Array<TOriginalIdentifier>): string => {
@@ -47,22 +31,14 @@ export const getImgUrl = (identifier: TOriginalIdentifier | Array<TOriginalIdent
   }
 }
 
-export const getDates = (dates: TOriginalDates | Array<TOriginalDates>): Array<TDate> => {
-  if (dates instanceof Array) {
-    return dates.map(date => {
-      return {
-        date: date.Pdate._text,
-        event: date.Pevent._text
-      }
-    });
-  } else {
-    return [{
-      date: dates.Pdate._text,
-      event: dates.Pevent._text
-    }];
-  }
+export const getDates = (inputData: TOriginalDates | Array<TOriginalDates>): Array<TDate> => {
+  const dates = inputData instanceof Array ? inputData : [inputData];
+  return dates.map(date => 
+    ({
+      date: date.Pdate._text,
+      event: date.Pevent._text
+    }));
 }
-
 
 const findOnePropertyInArrayOfObjects = <T, K extends keyof T>(key: K, arr: Array<T>) => {
   const firstObjectToContainKey = arr.find(obj => obj[key] !== undefined);
@@ -92,8 +68,13 @@ export const getTopics = (inputData: Array<TOriginalTopic> | TOriginalTopic): Ar
     }, [] as Array<IDocumentRelation>);
 }
 
-
 export const getSubtopics = (inputData: Array<TOriginalTopic> | TOriginalTopic): Array<IDocumentRelation> => {
   const data = inputData instanceof Array ? inputData : [inputData];
   return data.map(subTopic => ({ name: subTopic.Subtopic._text }));
+}
+
+// TODO add 'link' property to output later or use common function for relations
+export const getType = (inputData: TOriginalType): Array<IDocumentRelation> => {
+  const types = inputData.NameOfType instanceof Array ? inputData.NameOfType : [inputData.NameOfType];
+  return types.map(type => ({ name: type._text}));
 }

@@ -7,7 +7,7 @@ import {
   TOriginalCreator,
   TOriginalContributor,
   TOriginalContributorCorp } from '../../scraper/scraper.models';
-import { TSource } from '../transformer.types';
+import { ISource } from '../transformer.types';
 
 const getDescription = (description: TOriginalDescription | Array<TOriginalDescription>): string => {
   if (description instanceof Array) {
@@ -39,18 +39,9 @@ const getPreferredString = (preferred: string|undefined, secondary: string|undef
   return fallback;
 }
 
-const getKeywords = (coverage: Array<TOriginalCoverage> | TOriginalCoverage): Array<IDocumentRelation> => {
-  if (coverage instanceof Array) {
-    return coverage.map(kw => {
-      return {
-        name: kw.CoverageKeyword._text
-      }
-    });
-  } else {
-    return [{
-      name: coverage.CoverageKeyword._text
-    }]
-  }
+const getKeywords = (inputData: Array<TOriginalCoverage> | TOriginalCoverage): Array<IDocumentRelation> => {
+  const coverage = inputData instanceof Array ? inputData : [inputData];
+  return coverage.map(kw => ({ name: kw.CoverageKeyword._text }));
 }
 
 const findAllPropertiesInArrayOfObjects = <T, K extends keyof T>(key: K, arr: Array<T>): Array<string> => {
@@ -63,57 +54,25 @@ const findAllPropertiesInArrayOfObjects = <T, K extends keyof T>(key: K, arr: Ar
   }, []);
 }
 
-const getSource = (source: TOriginalSource|Array<TOriginalSource>): Array<TSource> => {
-  if (source instanceof Array) {
-    return source.map(src => {
-      const obj = { name: src.NameOfSource._text } as TSource
-      if (src.URLOfSource) {
-        obj.url = src.URLOfSource._text
-      }
-      return obj;
-    });
-  } else {
-    const obj = { name: source.NameOfSource._text } as TSource
-    if (source.URLOfSource) {
-      obj.url = source.URLOfSource._text
-    }
-    return [obj];
-  }
+const getSource = (inputData: TOriginalSource|Array<TOriginalSource>): Array<ISource> => {
+  const source = inputData instanceof Array ? inputData : [inputData];
+  return source.map(src => ({
+    name: src.NameOfSource._text,
+    ...(src.URLOfSource && { url: src.URLOfSource._text })      
+  }));
 }
 
 const getSubCollection = (inputData: TOriginalSubCollection|Array<TOriginalSubCollection>): Array<IDocumentRelation> => {
-  if (inputData instanceof Array) {
-    return inputData.map(item => {
-      const obj = { 
-        name: item.NameOfCollection._text,
-      } as IDocumentRelation;
-       
-      return obj;
-    });
-  } else {
-    const obj = { 
-      name: inputData.NameOfCollection._text,
-    } as IDocumentRelation;
-
-    return [obj];
-  }
+  const subcollections = inputData instanceof Array ? inputData : [inputData];
+  return subcollections.map(item => ({ name: item.NameOfCollection._text }));
 }
 
 const getCreator = (inputData: TOriginalCreator | Array<TOriginalCreator>): Array<ICreator> => {
-  if (inputData instanceof Array) {
-    return inputData.map(creator => {
-      const obj: ICreator = { name: getCreatorName(creator) };
-      if (creator.RoleOfCreator) {
-        obj.role = creator.RoleOfCreator._text;
-      }
-      return obj;
-    });
-  }
-  const creator: ICreator = { name: getCreatorName(inputData)}
-  if (inputData.RoleOfCreator) {
-    creator.role = inputData.RoleOfCreator._text;
-  }
-  return [creator];
+  const creators = inputData instanceof Array ? inputData : [inputData];
+  return creators.map(creator => ({
+    name: getCreatorName(creator),
+    ...(creator.RoleOfCreator && { role: creator.RoleOfCreator._text })      
+  }));
 }
 
 const getCreatorName = (inputData: TOriginalCreator) => {
@@ -123,26 +82,12 @@ const getCreatorName = (inputData: TOriginalCreator) => {
   return inputData.CreatorFamilyName._text;
 }
 
-const transformContributors = (contributors: TOriginalContributor | Array<TOriginalContributor> ): Array<ICreator> => {
-  if (contributors instanceof Array) {
-    return contributors.map(contributor => {
-      const transformedContributor: ICreator = {
-        name: concatText([contributor.ContributorFamilyName._text, contributor.ContributorGivenName?._text], ", ")       
-      }
-      if (contributor.RoleOfContributor) {
-        transformedContributor.role = contributor.RoleOfContributor._text
-      }
-      return transformedContributor
-    });
-  } else {
-    const transformedContributor: ICreator = {
-      name: concatText([contributors.ContributorFamilyName._text, contributors.ContributorGivenName?._text], ", ")       
-    }
-    if (contributors.RoleOfContributor) {
-      transformedContributor.role = contributors.RoleOfContributor._text
-    }
-    return [transformedContributor];
-  }
+const transformContributors = (inputData: TOriginalContributor | Array<TOriginalContributor> ): Array<ICreator> => {
+  const contributors = inputData instanceof Array ? inputData : [inputData];
+  return contributors.map(contributor => ({
+    name: concatText([contributor.ContributorFamilyName._text, contributor.ContributorGivenName?._text], ", "),
+    ...(contributor.RoleOfContributor && { role: contributor.RoleOfContributor._text })      
+  }));
 }
 
 const concatText = (arr: Array<string|undefined>, separator: string) => {
@@ -158,20 +103,13 @@ const concatText = (arr: Array<string|undefined>, separator: string) => {
   }, "");
 }
 
-const transformContributorCorps = (contributorCorps: TOriginalContributorCorp | Array<TOriginalContributorCorp>): Array<ICreator> => {
-  if (contributorCorps instanceof Array) {
-    return contributorCorps.map(contributorCorp => {
-      return {
-        name: concatText([contributorCorp.ContributorCorpName._text, contributorCorp.PlaceOfContributorCorp?._text], ", "),
-        role: contributorCorp.RoleOfContributorCorp._text
-      }
-    });
-  } else {
-    return [{
-      name: concatText([contributorCorps.ContributorCorpName._text, contributorCorps.PlaceOfContributorCorp?._text], ", "),
-      role: contributorCorps.RoleOfContributorCorp._text
-    }];
-  }
+const transformContributorCorps = (inputData: TOriginalContributorCorp | Array<TOriginalContributorCorp>): Array<ICreator> => {
+  const contributorCorps = inputData instanceof Array ? inputData : [inputData];
+    
+  return contributorCorps.map(contributorCorp => ({
+    name: concatText([contributorCorp.ContributorCorpName._text, contributorCorp.PlaceOfContributorCorp?._text], ", "),
+    role: contributorCorp.RoleOfContributorCorp._text
+  }));
 }
 
 export const getOptionalProperty = {

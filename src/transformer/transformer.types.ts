@@ -3,17 +3,16 @@ export type TDate = {
   event: string,
 }
 
-export type TSource = {
-  name: string,
-  url: string
-}
-
 export interface IDocumentRelation {
   name: string
 }
 
 export interface ICreator extends IDocumentRelation {
   role?: string
+}
+
+export interface ISource extends IDocumentRelation {
+  url?: string
 }
 
 export type TJsonData = {
@@ -25,7 +24,7 @@ export type TJsonData = {
       title: string
       dates: Array<TDate>,
       description?: string,
-      source?: Array<TSource>,
+      source?: Array<ISource>,
       creator?: Array<ICreator>
       originalUrl: string
     },
