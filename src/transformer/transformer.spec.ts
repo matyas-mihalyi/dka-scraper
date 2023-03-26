@@ -16,7 +16,7 @@ describe('transformDocument', () => {
           expect(data).toHaveProperty('id');
         });
         it('should be the correct id', () => {
-          const expected = '000001';
+          const expected = 1;
           const actual = data.id;
           expect(actual).toBe(expected);
         });

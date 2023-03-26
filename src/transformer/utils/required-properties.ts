@@ -10,15 +10,16 @@ import {
   TTextData,
   } from '../transformer.types';
 
-export const getId = (identifier: TOriginalIdentifier | Array<TOriginalIdentifier>): string => {
-  let urlOfDoc: TTextData;
-  if (identifier instanceof Array) {
-    urlOfDoc = findOnePropertyInArrayOfObjects('URLOfDoc', identifier);
-  } else {
-    urlOfDoc = identifier.URLOfDoc
-  }
-  const text = urlOfDoc._text;
-  return text.substring(text.length - 6);
+const getIdString = (inputData: TOriginalIdentifier | Array<TOriginalIdentifier>): string => {
+  const identifier = inputData instanceof Array ? inputData : [inputData];
+
+  const urlOfDoc = findOnePropertyInArrayOfObjects('URLOfDoc', identifier);
+  return urlOfDoc._text.substring(urlOfDoc._text.length - 6);
+}
+
+export const getId = (inputData: TOriginalIdentifier | Array<TOriginalIdentifier>): number => {
+  const idString = getIdString(inputData);
+  return Number(idString);
 }
 
 export const getImgUrl = (identifier: TOriginalIdentifier | Array<TOriginalIdentifier>): string => {
@@ -49,12 +50,13 @@ const isIdInvalid = (id: string): boolean => {
   return !/\d{6}/.test(id);
 }
 
-export const getOriginalUrl = (id: string): string => {
-  if (isIdInvalid(id)) {
-    throw new Error(`Can't get original URL for invalid id: ${id}`);
+export const getOriginalUrl = (inputData: TOriginalIdentifier | Array<TOriginalIdentifier>): string => {
+  const idString = getIdString(inputData);
+  if (isIdInvalid(idString)) {
+    throw new Error(`Can't get original URL for invalid id: ${idString}`);
   }
 
-  return `https://dka.oszk.hu/html/kepoldal/index.phtml?id=${id}`;
+  return `https://dka.oszk.hu/html/kepoldal/index.phtml?id=${idString}`;
 }
 
 export const getTopics = (inputData: Array<TOriginalTopic> | TOriginalTopic): Array<IDocumentRelation> => {

@@ -6,6 +6,13 @@ export const mockIdentifierObject = {
   Thumbnail: { _text: 'http://dka.oszk.hu/097900/097928/borsszem_janko_1873_575_kiskep.jpg' }
 };
 
+export const mockIdentifierObjectWithInvalidId = {
+  URLOfDoc: { _text: 'http://dka.oszk.hu/097900/7928' },
+  Filename: { _text: 'borsszem_janko_1873_575.jpg' },
+  Thumbnail: { _text: 'http://dka.oszk.hu/097900/097928/borsszem_janko_1873_575_kiskep.jpg' }
+};
+
+
 export const mockIdentifierArray: Array<TOriginalIdentifier> = [
   mockIdentifierObject,
   mockIdentifierObject

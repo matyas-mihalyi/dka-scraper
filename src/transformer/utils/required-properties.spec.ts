@@ -19,17 +19,18 @@ import {
   mockTopicObject,
   mockTopicArray,
   mockTopicArrayWithDuplicate,
+  mockIdentifierObjectWithInvalidId,
  } from './required-properties.mock';
 
 describe('getId', () => {
   it('should extract the id from the identifier object', () => {
-    const expected = '097928';
+    const expected = 97928;
     const actual = getId(mockIdentifierObject);
 
     expect(actual).toBe(expected);
   });
   it('should extract the id from an array of identifier objects', () => {
-    const expected = '097928';
+    const expected = 97928;
     const actual = getId(mockIdentifierArray);
 
     expect(actual).toBe(expected);
@@ -114,18 +115,14 @@ describe('getDates', () => {
 
 describe('getOriginalUrl', () => {
   it('should return the url pointing to the original DKA page', () => {
-    const expected = 'https://dka.oszk.hu/html/kepoldal/index.phtml?id=000001';
-    const actual = getOriginalUrl('000001');
+    const expected = 'https://dka.oszk.hu/html/kepoldal/index.phtml?id=097928';
+    const actual = getOriginalUrl(mockIdentifierObject);
     
     expect(actual).toBe(expected);
   });
 
   it('should throw error when called with id with invalid length', () => {
-    expect(() => getOriginalUrl('01')).toThrowError(`Can't get original URL for invalid id: 01`);
-  });
-
-  it('should throw error when called with id containing invalid characters', () => {
-    expect(() => getOriginalUrl('abcdef')).toThrowError(`Can't get original URL for invalid id: abcdef`);
+    expect(() => getOriginalUrl(mockIdentifierObjectWithInvalidId)).toThrowError();
   });
 });
 

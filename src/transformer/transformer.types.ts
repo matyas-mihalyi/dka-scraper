@@ -17,7 +17,7 @@ export interface ISource extends IDocumentRelation {
 
 export type TJsonData = {
   data: {
-    id: string,
+    id: number,
     attributes: {
       type: Array<IDocumentRelation>,
       img: string,

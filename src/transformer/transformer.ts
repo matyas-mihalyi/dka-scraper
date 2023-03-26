@@ -22,7 +22,7 @@ export function transformDocument (document: TOriginalSchema): TJsonData {
         img: getImgUrl(inputData.identifier),
         title: inputData.DKAtitle.MainTitle._text,
         dates: getDates(inputData.date),
-        originalUrl: getOriginalUrl(getId(inputData.identifier)) 
+        originalUrl: getOriginalUrl(inputData.identifier) 
       },
       relationships: {
         topics: getTopics(inputData.topic),
