@@ -1,11 +1,11 @@
 import { TableName } from "../../db.config";
-import { TJsonData, TRelationship } from "../../transformer/transformer.types";
+import { TJsonData, IDocumentRelation } from "../../transformer/transformer.types";
 import { getDataColumnName, queryDatabase } from "./common";
 
 const db = require("../../db");
 const format = require("pg-format");
 
-export const insertRelationships = async (data: Array<TRelationship>, tableName: TableName) => {
+export const insertRelationships = async (data: Array<IDocumentRelation>, tableName: TableName) => {
   const ids: Array<number> = [];
   if (data?.length) {
     for (const relationship of data) {
@@ -16,7 +16,7 @@ export const insertRelationships = async (data: Array<TRelationship>, tableName:
   return ids;
 };
 
-const insertRelationship = async (data: TRelationship, table: TableName) => {
+const insertRelationship = async (data: IDocumentRelation, table: TableName) => {
   const dataColumn = getDataColumnName(table); // name of column containing the JSON data in the table
   const stringifiedData = JSON.stringify(data); 
   const idOfExistingRow = await getIdIfExists(table, dataColumn, stringifiedData);
@@ -66,7 +66,7 @@ const getIdIfExists = async (tableName: TableName, columnName: string, data: str
  * @param relationship 
  * @returns value of name property as string
  */
-export const findFirstNameProperty = (relationship: TRelationship): string => {
+export const findFirstNameProperty = (relationship: IDocumentRelation): string => {
   const str = JSON.stringify(relationship);
   const value = str.match(/name":"([^"]*)"/)![1];
   return value;

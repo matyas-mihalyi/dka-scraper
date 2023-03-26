@@ -81,7 +81,7 @@ describe('getSource', () => {
     });
     it('Should return objects with "url" key if its present in the source', () => {
       expect(actual[0]).toHaveProperty('url');
-      expect(actual[0].url.length).toBeGreaterThan(2);
+      expect(actual[0].url?.length).toBeGreaterThan(2);
     });
   });
   describe('If argument is a single object', () => {
@@ -95,7 +95,7 @@ describe('getSource', () => {
     });
     it('Should return objects with "url" key if its present in the source', () => {
       expect(actual[0]).toHaveProperty('url');
-      expect(actual[0].url.length).toBeGreaterThan(2);
+      expect(actual[0].url?.length).toBeGreaterThan(2);
     });
   });
 });
