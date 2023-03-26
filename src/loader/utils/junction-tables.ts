@@ -16,6 +16,8 @@ export const getJunctionTableName = (tableName: TableName) => {
   switch (tableName) {
     case TableName.Topics:
       return TableName.DocumentTopics;
+    case TableName.Subtopics:
+      return TableName.DocumentSubtopics;
     case TableName.Subcollections:
       return TableName.DocumentSubcollections;
     case TableName.Coverage:

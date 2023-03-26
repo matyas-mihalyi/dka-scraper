@@ -9,7 +9,7 @@ import { createTables, insertRelationships, insertDocumentToTable, checkIfDataEx
 
 export const loadIntoDataBase = async (originalDoc: TOriginalSchema) => {
   const doc = transformDocument(originalDoc);
-  const documentId = +doc.data.id;
+  const documentId = doc.data.id;
   // check for tables
   // if not present create them
   await createTables();
@@ -38,7 +38,7 @@ const handleRelationships = async (doc: TJsonData) => {
     if (data) {
       const junctionTableName = getJunctionTableName(relationship);
       const ids = await insertRelationships(data, relationship);
-      await insertIntoJunctionTable(junctionTableName, +doc.data.id, ids);
+      await insertIntoJunctionTable(junctionTableName, doc.data.id, ids);
     }
   }
 };

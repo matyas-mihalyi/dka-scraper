@@ -1,10 +1,12 @@
 export enum TableName {
   Documents = 'documents',
   Topics = 'topics',
+  Subtopics = 'subtopics',
   Subcollections = 'subcollection',
   Coverage = 'coverage',
   Contributors = 'contributors',
   DocumentTopics = 'document_topics',
+  DocumentSubtopics = 'document_subtopics',
   DocumentSubcollections = 'document_subcollections',
   DocumentCoverage = 'document_coverage',
   DocumentContributors = 'document_contributors',
@@ -32,6 +34,19 @@ export const tableColumns = {
     },
     {
       columnName: 'topic_data',
+      dataType: 'jsonb',
+      constraint: 'NOT NULL'
+    }
+  ], 
+
+  [TableName.Subtopics]: [
+    {
+      columnName: 'id',
+      dataType: 'serial',
+      constraint: 'PRIMARY KEY'
+    },
+    {
+      columnName: 'subtopic_data',
       dataType: 'jsonb',
       constraint: 'NOT NULL'
     }
@@ -91,6 +106,24 @@ export const tableColumns = {
       columnName: 'topic_id',
       dataType: 'int',
       constraint: `REFERENCES ${TableName.Topics}`
+    }
+  ], 
+
+  [TableName.DocumentSubtopics]: [
+    {
+      columnName: 'id',
+      dataType: 'serial',
+      constraint: 'PRIMARY KEY'
+    },
+    {
+      columnName: 'document_id',
+      dataType: 'int',
+      constraint: `REFERENCES ${TableName.Documents}`
+    },
+    {
+      columnName: 'subtopic_id',
+      dataType: 'int',
+      constraint: `REFERENCES ${TableName.Subtopics}`
     }
   ], 
 

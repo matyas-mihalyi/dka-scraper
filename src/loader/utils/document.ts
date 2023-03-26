@@ -5,13 +5,21 @@ const db = require("../../db");
 const format = require("pg-format");
 
 export const insertDocumentToTable = async (tableName: TableName, data: any) => {
-  const columnName = getDataColumnName(tableName);
-  const documentId: number = +data.id;
-  const queryString = format(`INSERT INTO %I(id, %I) VALUES(%L, %L) RETURNING id;`, tableName, columnName, documentId, data);
-  await queryDatabase(queryString);
+  const documentId = data.id;
+  try {
+    const columnName = getDataColumnName(tableName);
+    const queryString = format(`INSERT INTO %I(id, %I) VALUES(%L, %L) RETURNING id;`, tableName, columnName, documentId, data);
+    await queryDatabase(queryString);
+  } catch (error) {
+    console.error(`Error while inserting document ${documentId} to table ${tableName}`, error)
+  }
 }
 
 export const checkIfDataExistsById = async (tableName: TableName, id:number) => {
-  const queryString = format(`SELECT id from %I where id = %L;`, tableName, id);
-  return await queryDatabase(queryString);
+  try {
+    const queryString = format(`SELECT id from %I where id = %L;`, tableName, id);
+    return await queryDatabase(queryString);
+  } catch (error) {
+    console.error(`Error while executing query for id: ${id}`, error);
+  }
 };
