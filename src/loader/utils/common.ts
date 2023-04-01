@@ -15,10 +15,8 @@ export const queryDatabase = async (queryString: string): Promise<number|undefin
 };
 
 export const getDataColumnName = (tableName: TableName): string => {
-  return tableColumns[tableName].reduce((acc, col) => {
-    if (col.columnName.includes('data')) {
-      return acc + col.columnName;
-    }
-    return acc;
-  }, '');
+  if (tableName === TableName.Coverage) {
+    return TableName.Coverage
+  }
+  return tableName.slice(0, -1);
 };

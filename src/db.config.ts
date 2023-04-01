@@ -20,7 +20,7 @@ export const tableColumns = {
       constraint: 'PRIMARY KEY'
     },
     {
-      columnName: 'document_data',
+      columnName: 'document',
       dataType: 'jsonb',
       constraint: 'NOT NULL'
     }
@@ -33,7 +33,7 @@ export const tableColumns = {
       constraint: 'PRIMARY KEY'
     },
     {
-      columnName: 'topic_data',
+      columnName: 'topic',
       dataType: 'jsonb',
       constraint: 'NOT NULL'
     }
@@ -46,7 +46,7 @@ export const tableColumns = {
       constraint: 'PRIMARY KEY'
     },
     {
-      columnName: 'subtopic_data',
+      columnName: 'subtopic',
       dataType: 'jsonb',
       constraint: 'NOT NULL'
     }
@@ -59,7 +59,7 @@ export const tableColumns = {
       constraint: 'PRIMARY KEY'
     },
     {
-      columnName: 'subcollection_data',
+      columnName: 'subcollection',
       dataType: 'jsonb',
       constraint: 'NOT NULL'
     }
@@ -72,7 +72,7 @@ export const tableColumns = {
       constraint: 'PRIMARY KEY'
     },
     {
-      columnName: 'coverage_data',
+      columnName: 'coverage',
       dataType: 'jsonb',
       constraint: 'NOT NULL'
     }
@@ -85,7 +85,7 @@ export const tableColumns = {
       constraint: 'PRIMARY KEY'
     },
     {
-      columnName: 'contributor_data',
+      columnName: 'contributor',
       dataType: 'jsonb',
       constraint: 'NOT NULL'
     }
