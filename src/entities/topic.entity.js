@@ -1,18 +1,16 @@
-// import { DataTypes } from 'sequelize';
-// import { Table, Column, Model, BelongsToMany, PrimaryKey } from 'sequelize-typescript';
-// import { DkaDocument } from './document.entity';
-// import { JunctionTable } from './junction-table.enum';
+import { DataTypes, Model } from 'sequelize';
+import { sequelize } from '../db';
 
-// @Table({ timestamps: false })
-// export class Topic extends Model {
+export class Topic extends Model {}
 
-//   @BelongsToMany(() => DkaDocument, JunctionTable.Topic)
-//   documents: DkaDocument[];
-
-//   @PrimaryKey
-//   @Column(DataTypes.NUMBER)
-//   id: number;
-  
-//   @Column({ type: DataTypes.JSONB, field: 'topic'})
-//   topic: string;
-// } 
+Topic.init({
+  name: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+    unique: true
+  }
+}, {
+  sequelize,
+  modelName: 'Topic',
+  timestamps: false
+});
