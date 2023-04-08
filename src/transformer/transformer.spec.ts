@@ -157,21 +157,20 @@ describe('transformDocument', () => {
             expect(relationships).toHaveProperty('topics');
           });
           it('should contain the correct topic objects', () => {
-            const expected = [{ name: 'Térképek, grafikus anyagok' }];
+            const expected = [
+              {
+                topic: {
+                  name: 'Térképek, grafikus anyagok',
+                  },
+                subtopic: {
+                  name: 'Történelmi térképek',
+                  }
+              }
+            ];
             expect(relationships.topics).toStrictEqual(expected);
           });
         });
-
-        describe('subtopics', () => {
-          it('should have a subtopic key', () => {
-            expect(relationships).toHaveProperty('subtopics');
-          });
-          it('should contain the correct subtopic objects', () => {
-            const expected = [{ name: 'Történelmi térképek' }];
-            expect(relationships.subtopics).toStrictEqual(expected);
-          });
-        });
-
+        
         describe('coverage', () => {
           it('should have a coverage key', () => {
             expect(relationships).toHaveProperty('coverage');

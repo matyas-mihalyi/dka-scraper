@@ -26,7 +26,6 @@ export function transformDocument (document: TOriginalSchema): TJsonData {
       },
       relationships: {
         topics: getTopics(inputData.topic),
-        subtopics: getSubtopics(inputData.topic)
       }
     }
   };

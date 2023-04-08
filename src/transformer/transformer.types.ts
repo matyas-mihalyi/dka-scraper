@@ -1,6 +1,7 @@
 export type TDate = {
   date: string,
   event: string,
+  note?: string
 }
 
 export interface IDocumentRelation {
@@ -13,6 +14,15 @@ export interface ICreator extends IDocumentRelation {
 
 export interface ISource extends IDocumentRelation {
   url?: string
+}
+
+export type TTopic = {
+  topic: {
+    name: string
+  },
+  subtopic: {
+    name: string
+  },
 }
 
 export type TJsonData = {
@@ -29,8 +39,7 @@ export type TJsonData = {
       originalUrl: string
     },
     relationships: {
-      topics: Array<IDocumentRelation>,
-      subtopics: Array<IDocumentRelation>
+      topics: Array<TTopic>,
       subcollection?: Array<IDocumentRelation>,
       coverage?: Array<IDocumentRelation>
       contributors?: Array<ICreator>

@@ -76,8 +76,6 @@ export const getRelationshipData = (doc: TJsonData, tableName: TableName) => {
   switch (tableName) {
     case TableName.Topics:
       return doc.data.relationships.topics;
-    case TableName.Subtopics:
-      return doc.data.relationships.subtopics;
     case TableName.Subcollections:
       return doc.data.relationships.subcollection;
     case TableName.Coverage:

@@ -8,6 +8,7 @@ import {
   IDocumentRelation,
   TDate,
   TTextData,
+  TTopic,
   } from '../transformer.types';
 
 const getIdString = (inputData: TOriginalIdentifier | Array<TOriginalIdentifier>): string => {
@@ -59,15 +60,16 @@ export const getOriginalUrl = (inputData: TOriginalIdentifier | Array<TOriginalI
   return `https://dka.oszk.hu/html/kepoldal/index.phtml?id=${idString}`;
 }
 
-export const getTopics = (inputData: Array<TOriginalTopic> | TOriginalTopic): Array<IDocumentRelation> => {
+export const getTopics = (inputData: Array<TOriginalTopic> | TOriginalTopic): Array<TTopic> => {
     const data = inputData instanceof Array ? inputData : [inputData];
-    return data.reduce((acc, topic) => {
-      if (acc.filter(t => t.name === topic.Topic._text).length) {
-        return acc;
+    return data.map(t => ({
+      topic: {
+        name: t.Topic._text
+      },
+      subtopic: {
+        name: t.Subtopic._text
       }
-      acc.push({ name: topic.Topic._text});
-      return acc;
-    }, [] as Array<IDocumentRelation>);
+    }));
 }
 
 export const getSubtopics = (inputData: Array<TOriginalTopic> | TOriginalTopic): Array<IDocumentRelation> => {
