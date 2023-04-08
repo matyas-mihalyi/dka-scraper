@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='iso-8859-2' ?>
+<?xml-stylesheet type='text/css' href='/html/lista.css' ?>
+<link rel='stylesheet' type='text/css' href='/html/lista.css' ?>
+<DKA>
+<identifier> 
+	<URLOfDoc>https://dka.oszk.hu/103400/103462</URLOfDoc> 
+	<Filename>magyarorszgm02hens_orig_0049.jpg</Filename>
+        <Thumbnail>https://dka.oszk.hu/103400/103462/magyarorszgm02hens_orig_0049_kiskep.jpg</Thumbnail> 
+</identifier>
+<DKAtitle> 
+	<MainTitle>[A sz. Mihály templomának legújabb építkezése]</MainTitle>
+	<UniformTitle>A sz. Mihály templomának legújabb építkezése</UniformTitle>
+</DKAtitle>
+<other_title>
+	<OtherTitle>Sz. Mihály arkangyal temploma</OtherTitle> 
+	<TitleRefinement>alcím</TitleRefinement>
+</other_title>
+<contributor_corp>
+        <RoleOfContributorCorp>elektronikus szerkesztő</RoleOfContributorCorp>
+        <ContributorCorpName>OSZK MEK</ContributorCorpName>
+        <PlaceOfContributorCorp>Budapest</PlaceOfContributorCorp>
+        <CountryOfContributorCorp>Magyarország</CountryOfContributorCorp>
+</contributor_corp>
+<date>
+        <Pevent>felvéve</Pevent>
+        <PdateChar>2023-04-06</PdateChar>
+        <Pdate>2023-04-06</Pdate>
+</date>
+<date>
+        <Pevent>beszerezve</Pevent>
+        <PdateChar>2013-03-04</PdateChar>
+        <Pdate>2013-03-04</Pdate>
+        <PdateNote>MEK-be való felvétel időpontja</PdateNote>
+</date>
+<type>
+        <NameOfType>grafika</NameOfType>
+        <NameOfType>épület</NameOfType>
+        <NameOfType>könyvrészlet</NameOfType>
+</type>
+<subcollection>
+        <NameOfCollection>Magyarország műemlékei</NameOfCollection>
+</subcollection>
+<original_document>
+        <OriginalTitle>Magyarország csúcs-íves stylü műemlékei : Győr, Soprony, Pozsony, Sz.-György, Bazin, Modor és Nagy-Szombat</OriginalTitle>
+        <OriginalCreator>Henszlmann Imre</OriginalCreator>
+        <OriginalAttendance>Budapest : Egyetemi Ny., 1880</OriginalAttendance>
+        <OriginalType>könyv</OriginalType>
+</original_document>
+<source>
+        <NameOfSource>Internet Archive</NameOfSource>
+        <URLOfSource>http://archive.org/details/magyarorszgm02hens</URLOfSource>
+</source>
+<source>
+        <NameOfSource>OSZK MEK</NameOfSource>
+        <URLOfSource>https://mek.oszk.hu/11300/11396/</URLOfSource>
+</source>
+<topic>
+        <Topic>Képzőművészet, vizuális művészetek</Topic>
+        <Subtopic>Festészet, grafika</Subtopic>
+</topic>
+<topic>
+        <Topic>Képzőművészet, vizuális művészetek</Topic>
+        <Subtopic>Építőművészet</Subtopic>
+</topic>
+<topic>
+        <Topic>Építészet, építőipar</Topic>
+        <Subtopic>Épületek</Subtopic>
+</topic>
+<topic>
+        <Topic>Történelem, helytörténet</Topic>
+        <Subtopic>Helytörténet, helyismeret</Subtopic>
+</topic>
+<topic>
+        <Topic>Történelem, helytörténet</Topic>
+        <Subtopic>Muzeológia, műemlékvédelem</Subtopic>
+</topic>
+<subject>
+        <Keyword>grafika</Keyword>
+        <SubjectRefinement>műfaj</SubjectRefinement>
+</subject>
+<subject>
+        <Keyword>építészet</Keyword>
+        <SubjectRefinement>tárgyszó/kulcsszó</SubjectRefinement>
+</subject>
+<subject>
+        <Keyword>templom</Keyword>
+        <SubjectRefinement>tárgyszó/kulcsszó</SubjectRefinement>
+</subject>
+<subject>
+        <Keyword>orgona (hangszer)</Keyword>
+        <SubjectRefinement>tárgyszó/kulcsszó</SubjectRefinement>
+</subject>
+<subject>
+        <Keyword>karzat</Keyword>
+        <SubjectRefinement>tárgyszó/kulcsszó</SubjectRefinement>
+</subject>
+<coverage>
+        <CoverageKeyword>Sopron</CoverageKeyword>
+        <CoverageRefinement>földrajzi hely</CoverageRefinement>
+</coverage>
+<coverage>
+        <CoverageKeyword>1489</CoverageKeyword>
+        <CoverageRefinement>időszak</CoverageRefinement>
+</coverage>
+<description>
+        <Caption>28. A sz. Mihály templomának legújabb építkezése
+Sz. Mihály arkangyal temploma</Caption>
+        <Description>"Huszonnyolczadik ábránk adja a sz. Mihály templomának legújabb építkezését; ez az orgona-karzat. melyen az 1489-ik, mint keletkezési év van feljegyezve. A szelvény két oldala a templom két különféle részén van véve, jobbra látjuk az északi, alacsonyabb mellékhajót átszelve, balra az áláthajó déli ágának szelvényét. ...."(Forrás: https://mek.oszk.hu/11300/11396/11396.pdf)</Description>
+</description>
+<description>
+        <Description>"A Szent Mihályi templom Sopron legkorábbi temploma, melyet a tatárjárás előtt építettek. A város legmagasabb pontján áll ez az ősi templom. Az eredeti templomot a 13. században építették román stílusban, majd a 15. században gótikussá építették át. A mai neogótikus formáját a 19. századba kapta meg, amely id. Strono Ferenc tervei alapján készült. 
+A Szent Mihályi templom Magyarország gótikus alkotásai közül a második legjelentősebb a Budavári Mátyás templom után."(Forrás: https://szallas.hu/programok/szent-mihaly-templom-sopron-p4653)</Description>
+</description>
+<relation>
+        <NameOfRelation>Szt. Mihály temploma Sopronyban : Sz. Mihály arkangyal temploma</NameOfRelation>
+        <URLOfRelation>https://dka.oszk.hu/103400/103453</URLOfRelation>
+</relation>
+<format>
+        <FormatName>JPEG képállomány</FormatName>
+        <Metadata>N</Metadata>
+</format>
+<quality>
+        <FinestFormat>JPEG képállomány</FinestFormat>
+        <MaxImageSize>2438x1817</MaxImageSize>
+        <FinestResolution>72</FinestResolution>
+        <ColorOfImage>szürke</ColorOfImage>
+        <CompressionQuality>kevéssé tömörített</CompressionQuality>
+</quality>
+<status>
+        <StatusOfRecord>KÉSZ</StatusOfRecord>
+</status>
+<operator>
+        <RoleOfOperator>katalogizálás</RoleOfOperator>
+        <NameOfOperator>Nagy Zsuzsanna</NameOfOperator>
+</operator>
+</DKA>
