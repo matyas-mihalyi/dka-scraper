@@ -1,5 +1,5 @@
 import { transformDocument } from "../transformer/transformer";
-import { DkaDocument, Type, Coverage, Topic } from "../entities";
+import { DkaDocument, Type, Coverage, Topic, Subtopic } from "../entities";
 import { sequelize } from "../db";
 
 export const loadIntoDataBase = async (originalDoc) => {
@@ -57,15 +57,32 @@ export const loadIntoDataBase = async (originalDoc) => {
     return cov;
   }));
 
-  const topics = await Promise.all(doc.data.relationships.topics.map(async (topic) => {
+
+  let subtopics = [];
+
+  const topics = await Promise.all(doc.data.relationships.topics.map(async (topicData) => {
     const [t] = await Topic.findOrCreate({
       where: {
-        name: topic.name
+        name: topicData.topic.name
       },
       defaults: {
-        name: topic.name
+        name: topicData.topic.name
       }
     });
+
+    const [subtopic] = await Subtopic.findOrCreate({
+      where: {
+        name: topicData.subtopic.name
+      },
+      defaults: {
+        name: topicData.subtopic.name
+      }
+    });
+
+    await t.addSubtopic(subtopic);
+
+    subtopics.push(subtopic);
+
     return t;
   }));
 
@@ -74,6 +91,8 @@ export const loadIntoDataBase = async (originalDoc) => {
   await document.addTypes(types);
 
   await document.addTopics(topics);
+
+  await document.addSubtopics(subtopics);
   
   // remove this later
   const test = await DkaDocument.findOne({
@@ -96,11 +115,17 @@ export const loadIntoDataBase = async (originalDoc) => {
         }
       },
       {
-        model: Topic,
+        model: Subtopic,
         attributes: ['name'],
         through: {
           attributes: []
-        }
+        },
+        include: [
+          {
+            model: Topic,
+            attributes: ['name']
+          }
+        ]
       },
      ]
   });
