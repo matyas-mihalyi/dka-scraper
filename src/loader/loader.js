@@ -1,5 +1,5 @@
 import { transformDocument } from "../transformer/transformer";
-import { DkaDocument, Type, Coverage, Topic, Subtopic } from "../entities";
+import { DkaDocument, Type, Coverage, Topic, Subtopic, Subcollection } from "../entities";
 import { sequelize } from "../db";
 
 export const loadIntoDataBase = async (originalDoc) => {
@@ -57,6 +57,18 @@ export const loadIntoDataBase = async (originalDoc) => {
     return cov;
   }));
 
+  const subcollections = await Promise.all(doc.data.relationships.subcollection.map(async (subcollection) => {
+    const [subc] = await Subcollection.findOrCreate({
+      where: {
+        name: subcollection.name
+      },
+      defaults: {
+        name: subcollection.name
+      }
+    });
+    return subc;
+  }));
+
 
   let subtopics = [];
 
@@ -90,6 +102,8 @@ export const loadIntoDataBase = async (originalDoc) => {
 
   await document.addTypes(types);
 
+  await document.addSubcollections(subcollections);
+
   await document.addTopics(topics);
 
   await document.addSubtopics(subtopics);
@@ -109,6 +123,13 @@ export const loadIntoDataBase = async (originalDoc) => {
       },
       {
         model: Type,
+        attributes: ['name'],
+        through: {
+          attributes: []
+        }
+      },
+      {
+        model: Subcollection,
         attributes: ['name'],
         through: {
           attributes: []
