@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../db';
+import { CONTRIBUTOR_MODEL, CONTRIBUTOR_TABLE } from './constants';
 
 export class Contributor extends Model {}
 
@@ -13,6 +14,8 @@ Contributor.init({
   }
 },{
   sequelize,
-  modelName: 'Contributor',
-  timestamps: false
+  modelName: CONTRIBUTOR_MODEL,
+  timestamps: false,
+  tableName: CONTRIBUTOR_TABLE,
+  freezeTableName: true,
 });

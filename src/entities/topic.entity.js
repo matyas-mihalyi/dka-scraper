@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../db';
+import { TOPIC_MODEL, TOPIC_TABLE } from './constants';
 
 export class Topic extends Model {}
 
@@ -11,6 +12,8 @@ Topic.init({
   }
 }, {
   sequelize,
-  modelName: 'Topic',
-  timestamps: false
+  modelName: TOPIC_MODEL,
+  timestamps: false,
+  tableName: TOPIC_TABLE,
+  freezeTableName: true,
 });

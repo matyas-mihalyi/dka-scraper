@@ -1,6 +1,7 @@
 import { DataTypes, Model } from 'sequelize';
 
 import { sequelize } from '../db';
+import { DOCUMENT_MODEL, DOCUMENT_TABLE } from './constants';
 
 export class DkaDocument extends Model {}
 
@@ -43,6 +44,8 @@ DkaDocument.init({
 
 }, {
   sequelize,
-  modelName: 'DkaDocument',
-  timestamps: false
+  modelName: DOCUMENT_MODEL,
+  timestamps: false,
+  tableName: DOCUMENT_TABLE,
+  freezeTableName: true,
 });
