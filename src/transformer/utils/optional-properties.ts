@@ -9,7 +9,7 @@ import {
   TOriginalContributorCorp } from '../../scraper/scraper.models';
 import { ISource } from '../transformer.types';
 
-const getDescription = (description: TOriginalDescription | Array<TOriginalDescription>): string => {
+export const getDescription = (description: TOriginalDescription | Array<TOriginalDescription>): string => {
   if (description instanceof Array) {
     const containsDescription = !!description.filter(obj => obj.Description !== undefined).length;
     const key = containsDescription ? 'Description' : 'Caption';
@@ -39,7 +39,7 @@ const getPreferredString = (preferred: string|undefined, secondary: string|undef
   return fallback;
 }
 
-const getKeywords = (inputData: Array<TOriginalCoverage> | TOriginalCoverage): Array<IDocumentRelation> => {
+export const getKeywords = (inputData: Array<TOriginalCoverage> | TOriginalCoverage): Array<IDocumentRelation> => {
   const coverage = inputData instanceof Array ? inputData : [inputData];
   return coverage.map(kw => ({ name: kw.CoverageKeyword._text }));
 }
@@ -54,7 +54,7 @@ const findAllPropertiesInArrayOfObjects = <T, K extends keyof T>(key: K, arr: Ar
   }, []);
 }
 
-const getSource = (inputData: TOriginalSource|Array<TOriginalSource>): Array<ISource> => {
+export const getSource = (inputData: TOriginalSource|Array<TOriginalSource>): Array<ISource> => {
   const source = inputData instanceof Array ? inputData : [inputData];
   return source.map(src => ({
     name: src.NameOfSource._text,
@@ -62,12 +62,12 @@ const getSource = (inputData: TOriginalSource|Array<TOriginalSource>): Array<ISo
   }));
 }
 
-const getSubCollection = (inputData: TOriginalSubCollection|Array<TOriginalSubCollection>): Array<IDocumentRelation> => {
+export const getSubCollection = (inputData: TOriginalSubCollection|Array<TOriginalSubCollection>): Array<IDocumentRelation> => {
   const subcollections = inputData instanceof Array ? inputData : [inputData];
   return subcollections.map(item => ({ name: item.NameOfCollection._text }));
 }
 
-const getCreator = (inputData: TOriginalCreator | Array<TOriginalCreator>): Array<ICreator> => {
+export const getCreator = (inputData: TOriginalCreator | Array<TOriginalCreator>): Array<ICreator> => {
   const creators = inputData instanceof Array ? inputData : [inputData];
   return creators.map(creator => ({
     name: getCreatorName(creator),
@@ -82,7 +82,7 @@ const getCreatorName = (inputData: TOriginalCreator) => {
   return inputData.CreatorFamilyName._text;
 }
 
-const transformContributors = (inputData: TOriginalContributor | Array<TOriginalContributor> ): Array<ICreator> => {
+export const transformContributors = (inputData: TOriginalContributor | Array<TOriginalContributor> ): Array<ICreator> => {
   const contributors = inputData instanceof Array ? inputData : [inputData];
   return contributors.map(contributor => ({
     name: concatText([contributor.ContributorFamilyName._text, contributor.ContributorGivenName?._text], ", "),
@@ -103,21 +103,11 @@ const concatText = (arr: Array<string|undefined>, separator: string) => {
   }, "");
 }
 
-const transformContributorCorps = (inputData: TOriginalContributorCorp | Array<TOriginalContributorCorp>): Array<ICreator> => {
+export const transformContributorCorps = (inputData: TOriginalContributorCorp | Array<TOriginalContributorCorp>): Array<ICreator> => {
   const contributorCorps = inputData instanceof Array ? inputData : [inputData];
     
   return contributorCorps.map(contributorCorp => ({
     name: concatText([contributorCorp.ContributorCorpName._text, contributorCorp.PlaceOfContributorCorp?._text], ", "),
     role: contributorCorp.RoleOfContributorCorp._text
   }));
-}
-
-export const getOptionalProperty = {
-    source: getSource,
-    subcollection: getSubCollection,
-    coverage: getKeywords,
-    creator: getCreator,
-    description: getDescription,
-    contributor: transformContributors,
-    contributor_corp: transformContributorCorps,
 }

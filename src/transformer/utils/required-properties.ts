@@ -72,11 +72,6 @@ export const getTopics = (inputData: Array<TOriginalTopic> | TOriginalTopic): Ar
     }));
 }
 
-export const getSubtopics = (inputData: Array<TOriginalTopic> | TOriginalTopic): Array<IDocumentRelation> => {
-  const data = inputData instanceof Array ? inputData : [inputData];
-  return data.map(subTopic => ({ name: subTopic.Subtopic._text }));
-}
-
 // TODO add 'link' property to output later or use common function for relations
 export const getType = (inputData: TOriginalType): Array<IDocumentRelation> => {
   const types = inputData.NameOfType instanceof Array ? inputData.NameOfType : [inputData.NameOfType];

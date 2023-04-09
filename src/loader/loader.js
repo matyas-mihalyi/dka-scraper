@@ -5,53 +5,53 @@ import { sequelize } from "../db";
 export const loadIntoDataBase = async (originalDoc) => {
   await sequelize.sync({ force: false });
   const doc = transformDocument(originalDoc);
-  console.log(`------------ ORIGINAL DOC ${doc.data.id} ------------`)
+  console.log(`------------ ORIGINAL DOC ${doc.id} ------------`)
   console.log(JSON.stringify(doc, null, 2))
 
   const [document] = await DkaDocument.findOrCreate({
     where: {
-      id: doc.data.id,
-      img: doc.data.attributes.img,
-      title: doc.data.attributes.title,
-      dates: JSON.stringify(doc.data.attributes.dates),
-      description: doc.data.attributes.description,
-      source: JSON.stringify(doc.data.attributes.source),
-      creator: JSON.stringify(doc.data.attributes.creator) || null,
-      originalUrl: doc.data.attributes.originalUrl,
+      id: doc.id,
+      img: doc.img,
+      title: doc.title,
+      dates: JSON.stringify(doc.dates),
+      description: doc.description,
+      source: JSON.stringify(doc.source),
+      creator: JSON.stringify(doc.creator) || null,
+      originalUrl: doc.originalUrl,
     },
     defaults: {
-      id: doc.data.id,
-      img: doc.data.attributes.img,
-      title: doc.data.attributes.title,
-      dates: JSON.stringify(doc.data.attributes.dates),
-      description: doc.data.attributes.description,
-      source: JSON.stringify(doc.data.attributes.source),
-      creator: JSON.stringify(doc.data.attributes.creator) || null,
-      originalUrl: doc.data.attributes.originalUrl,
+      id: doc.id,
+      img: doc.img,
+      title: doc.title,
+      dates: JSON.stringify(doc.dates),
+      description: doc.description,
+      source: JSON.stringify(doc.source),
+      creator: JSON.stringify(doc.creator) || null,
+      originalUrl: doc.originalUrl,
     }
   });
 
-  const types = await handleRelation(doc.data.attributes.type, Type, ['name', 'name']);
+  const types = await handleRelation(doc.type, Type, ['name', 'name']);
   await document.addTypes(types);  
 
-  if (doc.data.relationships.coverage) {
-    const coverages = await handleRelation(doc.data.relationships.coverage, Coverage, ['name', 'name']);
+  if (doc.relationships.coverage) {
+    const coverages = await handleRelation(doc.relationships.coverage, Coverage, ['name', 'name']);
     await document.addCoverages(coverages);  
   }
     
-  if (doc.data.relationships.contributors) {
-    const contributors = await handleRelation(doc.data.relationships.contributors, Contributor, ['name', 'name'], ['role', 'role']);
+  if (doc.relationships.contributors) {
+    const contributors = await handleRelation(doc.relationships.contributors, Contributor, ['name', 'name'], ['role', 'role']);
     await document.addContributors(contributors);  
   }
 
-  if (doc.data.relationships.subcollection) {
-    const subcollections = await handleRelation(doc.data.relationships.subcollection, Subcollection, ['name', 'name']);
+  if (doc.relationships.subcollection) {
+    const subcollections = await handleRelation(doc.relationships.subcollection, Subcollection, ['name', 'name']);
     await document.addSubcollections(subcollections);  
   }
 
   let subtopics = [];
 
-  const topics = await Promise.all(doc.data.relationships.topics.map(async (topicData) => {
+  const topics = await Promise.all(doc.relationships.topics.map(async (topicData) => {
     const [t] = await Topic.findOrCreate({
       where: {
         name: topicData.topic.name
@@ -84,7 +84,7 @@ export const loadIntoDataBase = async (originalDoc) => {
   // remove this later
   const test = await DkaDocument.findOne({
     where: {
-      id: doc.data.id
+      id: doc.id
     },
     include: [ 
       {
@@ -131,7 +131,7 @@ export const loadIntoDataBase = async (originalDoc) => {
      ]
   });
 
-  console.log(`------------ SAVED DOC ${doc.data.id} ------------`)
+  console.log(`------------ SAVED DOC ${doc.id} ------------`)
   console.log(JSON.stringify(document, null, 2))
   console.log(JSON.stringify(test, null, 2))
 }

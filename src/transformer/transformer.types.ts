@@ -26,25 +26,21 @@ export type TTopic = {
 }
 
 export type TJsonData = {
-  data: {
     id: number,
-    attributes: {
-      type: Array<IDocumentRelation>,
-      img: string,
-      title: string
-      dates: Array<TDate>,
-      description?: string,
-      source?: Array<ISource>,
-      creator?: Array<ICreator>
-      originalUrl: string
-    },
+    type: Array<IDocumentRelation>,
+    img: string,
+    title: string
+    dates: Array<TDate>,
+    description?: string,
+    source?: Array<ISource>,
+    creator?: Array<ICreator>
+    originalUrl: string
     relationships: {
       topics: Array<TTopic>,
       subcollection?: Array<IDocumentRelation>,
       coverage?: Array<IDocumentRelation>
       contributors?: Array<ICreator>
     }
-  }
 }
 
 export type TTextData = {

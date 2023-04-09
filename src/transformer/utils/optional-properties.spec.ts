@@ -1,7 +1,4 @@
 import {
-  getOptionalProperty
-} from './optional-properties';
-import {
   mockDescriptionArrayWithDescriptionObjects,
   mockDescriptionArrayWithSingleDescription,
   mockDescriptionArrayWithoutDescriptionObjects,
@@ -17,13 +14,15 @@ import {
   mockContributorCorpArray
 } from './optional-properties.mock';
 import { mockCreatorArray, mockCreatorObject, mockCreatorObjectWithoutGivenName, mockSubCollectionArray, mockSubCollectionObject } from './optional-properties.mock';
+import {
+  getDescription,
+  getSource,
+  getSubCollection,
+  getCreator,
+  transformContributors,
+  transformContributorCorps,
 
-const getDescription = getOptionalProperty.description;
-const getSource = getOptionalProperty.source;
-const getSubCollection = getOptionalProperty.subcollection;
-const getCreator = getOptionalProperty.creator;
-const getContributor = getOptionalProperty.contributor;
-const getContributorCorp = getOptionalProperty.contributor_corp;
+} from './optional-properties';  
 
 describe('getDescription', () => {
   describe('If argument is an array', () => {
@@ -176,7 +175,7 @@ describe('getCreator', () => {
 });
 
 
-describe('getContributor', () => {
+describe('transformContributors', () => {
   it('should return an array of contributor objects when contributor object provided', () => {
     const expected = [
       {
@@ -184,7 +183,7 @@ describe('getContributor', () => {
         role: 'role'
       }
     ];
-    const actual = getContributor(mockContributorObject);
+    const actual = transformContributors(mockContributorObject);
 
     expect(actual).toStrictEqual(expected);
   });
@@ -199,13 +198,13 @@ describe('getContributor', () => {
         role: 'role'
       }
     ];
-    const actual = getContributor(mockContributorArray);
+    const actual = transformContributors(mockContributorArray);
 
     expect(actual).toStrictEqual(expected);
   });
 });
 
-describe('getContributorCorp', () => {
+describe('transformContributorCorps', () => {
   it('should return an array of contributor objects when contributor corp object provided', () => {
     const expected = [
       {
@@ -213,7 +212,7 @@ describe('getContributorCorp', () => {
         role: 'role'
       }
     ];
-    const actual = getContributorCorp(mockContributorCorpObject);
+    const actual = transformContributorCorps(mockContributorCorpObject);
 
     expect(actual).toStrictEqual(expected);
   });
@@ -229,7 +228,7 @@ describe('getContributorCorp', () => {
         role: 'role'
       }
     ];
-    const actual = getContributorCorp(mockContributorCorpArray);
+    const actual = transformContributorCorps(mockContributorCorpArray);
 
     expect(actual).toStrictEqual(expected);
   });
