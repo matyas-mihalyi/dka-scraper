@@ -8,7 +8,6 @@ export const loadIntoDataBase = async (originalDoc) => {
   console.log(`------------ ORIGINAL DOC ${doc.data.id} ------------`)
   console.log(JSON.stringify(doc, null, 2))
 
-  // create document with id if there is none with that id
   const [document] = await DkaDocument.findOrCreate({
     where: {
       id: doc.data.id,
@@ -32,56 +31,23 @@ export const loadIntoDataBase = async (originalDoc) => {
     }
   });
 
-  const types = await Promise.all(doc.data.attributes.type.map(async (type) => {
-    const [res] = await Type.findOrCreate({
-      where: {
-        name: type.name
-      },
-      defaults: {
-        name: type.name
-      }
-    });
-    return res;
-  }));
+  const types = await handleRelation(doc.data.attributes.type, Type, ['name', 'name']);
+  await document.addTypes(types);  
 
-  // what if undefined?
-  const coverages = await Promise.all(doc.data.relationships.coverage.map(async (coverage) => {
-    const [cov] = await Coverage.findOrCreate({
-      where: {
-        name: coverage.name
-      },
-      defaults: {
-        name: coverage.name
-      }
-    });
-    return cov;
-  }));
+  if (doc.data.relationships.coverage) {
+    const coverages = await handleRelation(doc.data.relationships.coverage, Coverage, ['name', 'name']);
+    await document.addCoverages(coverages);  
+  }
+    
+  if (doc.data.relationships.contributors) {
+    const contributors = await handleRelation(doc.data.relationships.contributors, Contributor, ['name', 'name'], ['role', 'role']);
+    await document.addContributors(contributors);  
+  }
 
-  const subcollections = await Promise.all(doc.data.relationships.subcollection.map(async (subcollection) => {
-    const [subc] = await Subcollection.findOrCreate({
-      where: {
-        name: subcollection.name
-      },
-      defaults: {
-        name: subcollection.name
-      }
-    });
-    return subc;
-  }));
-
-  const contributors = await Promise.all(doc.data.relationships.contributors.map(async (contributor) => {
-    const [cont] = await Contributor.findOrCreate({
-      where: {
-        name: contributor.name,
-        role: contributor.role
-      },
-      defaults: {
-        name: contributor.name,
-        role: contributor.role
-      }
-    });
-    return cont;
-  }));
+  if (doc.data.relationships.subcollection) {
+    const subcollections = await handleRelation(doc.data.relationships.subcollection, Subcollection, ['name', 'name']);
+    await document.addSubcollections(subcollections);  
+  }
 
   let subtopics = [];
 
@@ -110,14 +76,6 @@ export const loadIntoDataBase = async (originalDoc) => {
 
     return t;
   }));
-
-  await document.addCoverages(coverages);
-
-  await document.addTypes(types);
-
-  await document.addSubcollections(subcollections);
-
-  await document.addContributors(contributors);
 
   await document.addTopics(topics);
 
@@ -176,4 +134,28 @@ export const loadIntoDataBase = async (originalDoc) => {
   console.log(`------------ SAVED DOC ${doc.data.id} ------------`)
   console.log(JSON.stringify(document, null, 2))
   console.log(JSON.stringify(test, null, 2))
+}
+
+export async function handleRelation (
+  inputData,
+  relationModel,
+  ...keyPairs
+) {
+  const results = await Promise.all(inputData.map(async (relation) => {
+    const query = {};
+    for (const keyPair of keyPairs) {
+      Object.defineProperty(query, keyPair[0], {
+        value: relation[keyPair[1]],
+        enumerable: true
+      });
+    }
+
+    const [relationInstance] = await relationModel.findOrCreate({
+      where: query,
+      defaults: query
+    });
+    return relationInstance;
+  }));
+  
+  return results;
 }
