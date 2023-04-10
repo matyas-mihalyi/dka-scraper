@@ -4,7 +4,6 @@ import {
   getId,
   getImgUrl,
   getOriginalUrl,
-  getSubtopics,
   getTopics,
   getType,
 
