@@ -82,58 +82,57 @@ export const loadIntoDataBase = async (originalDoc) => {
   await document.addSubtopics(subtopics);
   
   // remove this later
-  const test = await DkaDocument.findOne({
-    where: {
-      id: doc.id
-    },
-    include: [ 
-      {
-        model: Coverage,
-        attributes: ['name'],
-        through: {
-          attributes: []
-        }
-      },
-      {
-        model: Type,
-        attributes: ['name'],
-        through: {
-          attributes: []
-        }
-      },
-      {
-        model: Subcollection,
-        attributes: ['name'],
-        through: {
-          attributes: []
-        }
-      },
-      {
-        model: Contributor,
-        attributes: ['name', 'role'],
-        through: {
-          attributes: []
-        }
-      },
-      {
-        model: Subtopic,
-        attributes: ['name'],
-        through: {
-          attributes: []
-        },
-        include: [
-          {
-            model: Topic,
-            attributes: ['name']
-          }
-        ]
-      },
-     ]
-  });
+  // const test = await DkaDocument.findOne({
+  //   where: {
+  //     id: doc.id
+  //   },
+  //   include: [ 
+  //     {
+  //       model: Coverage,
+  //       attributes: ['name'],
+  //       through: {
+  //         attributes: []
+  //       }
+  //     },
+  //     {
+  //       model: Type,
+  //       attributes: ['name'],
+  //       through: {
+  //         attributes: []
+  //       }
+  //     },
+  //     {
+  //       model: Subcollection,
+  //       attributes: ['name'],
+  //       through: {
+  //         attributes: []
+  //       }
+  //     },
+  //     {
+  //       model: Contributor,
+  //       attributes: ['name', 'role'],
+  //       through: {
+  //         attributes: []
+  //       }
+  //     },
+  //     {
+  //       model: Subtopic,
+  //       attributes: ['name'],
+  //       through: {
+  //         attributes: []
+  //       },
+  //       include: [
+  //         {
+  //           model: Topic,
+  //           attributes: ['name']
+  //         }
+  //       ]
+  //     },
+  //    ]
+  // });
 
   console.log(`------------ SAVED DOC ${doc.id} ------------`)
   console.log(JSON.stringify(document, null, 2))
-  console.log(JSON.stringify(test, null, 2))
 }
 
 export async function handleRelation (
