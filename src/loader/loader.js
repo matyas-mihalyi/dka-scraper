@@ -181,11 +181,28 @@ async function handleTopics (inputData) {
       return t;
     }));
 
-    const uniqueTopics = topics.filter((topic, i, arr) => arr.indexOf(JSON.parse(JSON.stringify(topic))) === i);
-  
+    const uniqueTopics = getUniqueTopics(topics);
     return [uniqueTopics, subtopics]
   } catch (error) {
     console.error('Error while handling topic creation');
     throw new Error(error)
   }
+}
+
+export function getUniqueTopics (arr) {
+  const uniqueTopics = [arr[0]];
+  for (let i = 1; i < arr.length; i++) {
+    let unique = true;
+
+    for (let j = 0; j < uniqueTopics.length; j++) {
+      if (uniqueTopics[j].id === arr[i].id) {
+        unique = false;
+        break;
+      }
+    }
+    if (unique) {
+      uniqueTopics.push(arr[i])
+    }
+  }
+  return uniqueTopics;
 }
