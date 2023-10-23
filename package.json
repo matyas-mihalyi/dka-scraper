@@ -6,7 +6,8 @@
   "scripts": {
     "test": "rm -rf ./dist && tsc & jest --coverage",
     "dev": "npx tsc -w & nodemon dist/app.js",
-    "start": "rm -rf ./dist && tsc && node ./dist/app.js"
+    "build": "rm -rf ./dist && tsc",
+    "start": "node ./dist/app.js"
   },
   "keywords": [],
   "author": "",
