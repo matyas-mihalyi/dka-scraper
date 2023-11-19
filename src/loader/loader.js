@@ -2,6 +2,7 @@ import stringify from 'fast-safe-stringify'
 import { transformDocument } from "../transformer/transformer";
 import { DkaDocument, Type, Coverage, Topic, Subtopic, Subcollection, Contributor } from "../entities";
 import { sequelize } from "../db";
+import { logger } from '../util';
 
 export const loadIntoDataBase = async (originalDoc) => {
   const doc = transformDocument(originalDoc);
@@ -62,7 +63,7 @@ export const loadIntoDataBase = async (originalDoc) => {
     logger.info(`Saved document ${doc.id}`, { documentId: doc.id, documentTitle: doc.title })
   } catch (error) {
     logger.error('Error while loading document ' + doc.id + ' into db', { error });
-    throw error;
+    throw new Error(error.message);
   }
 }
 
