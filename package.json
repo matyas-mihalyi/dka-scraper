@@ -2,12 +2,12 @@
   "name": "dka-xml-scraper",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
     "test": "rm -rf ./dist && tsc & jest --coverage",
-    "dev": "npx tsc -w & nodemon dist/app.js",
+    "dev": "npx tsc -w & nodemon dist/main.js",
     "build": "rm -rf ./dist && tsc",
-    "start": "node ./dist/app.js"
+    "start": "node ./dist/main.js"
   },
   "keywords": [],
   "author": "",
