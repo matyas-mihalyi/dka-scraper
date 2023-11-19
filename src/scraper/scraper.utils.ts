@@ -5,6 +5,7 @@ const axios = require('axios').default;
 import { AxiosResponse } from "axios";
 import { DkaDocument } from '../entities';
 import { sequelize } from '../db';
+import { logger } from '../util/logger';
 
 export function transformToId (id: number): string {
   const ID_LENGTH = 6;
@@ -29,7 +30,7 @@ export const logValidationError = (id: string, err: Error) => {
     `;
     
     fs.appendFileSync('./log.txt', log, 'utf-8', (e: Error) => {
-      if (e) console.error(e);
+      if (e) logger.error(e);
     });
 }
 
@@ -42,10 +43,10 @@ export async function findLastScrapedId (): Promise<number> {
       order: [['id', 'DESC']],
       limit: 1
     });
-    console.log(JSON.stringify(lastDoc, null, 2));
-    return await lastDoc[0]?.id ?? 0;
+    logger.info('Last scraper document id is ' + lastDoc[0]?.id);
+    return lastDoc[0]?.id ?? 0;
   } catch (error) {
-    console.error('Error while trying to find last scraped document\'s id', error);
+    logger.error('Error while trying to find last scraped document\'s id', error);
     throw new Error('Error while trying to find last scraped document\'s id');
   }
 }
@@ -64,9 +65,9 @@ async function getLastDocId (numberOfDocs:string, offset: string): Promise<numbe
     const urlOfLastDoc = $(`body > center > table:nth-child(4) > tbody > tr:nth-child(${nthOfLastElement}) > td > a`).attr('href');
     const numberString = getNumbersFromString(urlOfLastDoc);
     return Number(numberString);
-  } catch (error) {
-    console.error('Error while getting last doc id');
-    throw new Error(error);
+  } catch (error: unknown) {
+    logger.error('Error while getting last doc id', error);
+    throw new Error((error as Error).message);
   }
 }
 
@@ -76,9 +77,9 @@ async function getNumberOfDocs (): Promise<string> {
     const $ = cheerio.load(response.data);
     const string = $('b:first-child').text();
     return getNumbersFromString(string);
-  } catch (error) {
-    console.error('Error while getting number of docs');
-    throw new Error(error);
+  } catch (error: unknown) {
+    logger.error('Error while getting number of docs', error);
+    throw new Error((error as Error).message);
   }
 }
 

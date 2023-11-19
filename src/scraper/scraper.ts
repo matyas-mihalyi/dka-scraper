@@ -4,6 +4,7 @@ import { OriginalSchema, TOriginalSchema } from "./scraper.models";
 import { BASE_URL, MAX_RECORDS } from './scraper.constants';
 import { findLastScrapedId, getLatestDocumentId, logValidationError, transformToId } from './scraper.utils';
 import { loadIntoDataBase } from "../loader/loader";
+import { logger } from "../util/logger";
 
 async function getParsedXml (id: number): Promise<TOriginalSchema> {
   try {
@@ -12,19 +13,17 @@ async function getParsedXml (id: number): Promise<TOriginalSchema> {
     const xml = await res.data;
     const parsedXml = xml2js(xml, { compact: true }) as TOriginalSchema;
     
-    console.log(JSON.stringify(parsedXml, null, 2))
-    
     OriginalSchema.parse(parsedXml);
     return parsedXml;
   }
-  catch (err: any) {
-    logValidationError(id.toString(), err);
-    console.error('Schema validation failed')
-    throw new Error(err);
+  catch (err: unknown) {
+    logValidationError(id.toString(), err as Error);
+    logger.error('Failed to get parsed XML for document ' + id, { error: err })
   }
 }
 
 async function scrape (from: number, to: number) {
+  logger.info('Scraping documents', from, to)
   for (let id = from; id < to; id++) {
     const dkaDocument = await getParsedXml(id);
     await loadIntoDataBase(dkaDocument);
@@ -55,5 +54,3 @@ export async function scrapeDocuments () {
     throw new Error(error);
   }
 }
-
-

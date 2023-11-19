@@ -15,6 +15,7 @@ import {
 } from "./utils";
 import { TOriginalSchema } from "../scraper/scraper.models";
 import { ICreator, TJsonData } from "./transformer.types";
+import { logger } from "../util/logger";
 
 export function transformDocument (document: TOriginalSchema): TJsonData {
   const inputData = document.dkalista.DKA;
@@ -36,6 +37,7 @@ export function transformDocument (document: TOriginalSchema): TJsonData {
       ...inputData.contributor || inputData.contributor_corp && { contributors: getContributorsAndContributorCorps(inputData) }
     }
   }
+  logger.info('Transformed parsed XML for ' + transformedDocument.id)
   return transformedDocument; 
 }
 

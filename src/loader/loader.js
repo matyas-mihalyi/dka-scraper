@@ -1,3 +1,4 @@
+import stringify from 'fast-safe-stringify'
 import { transformDocument } from "../transformer/transformer";
 import { DkaDocument, Type, Coverage, Topic, Subtopic, Subcollection, Contributor } from "../entities";
 import { sequelize } from "../db";
@@ -5,30 +6,26 @@ import { sequelize } from "../db";
 export const loadIntoDataBase = async (originalDoc) => {
   const doc = transformDocument(originalDoc);
   try {
-
     await sequelize.sync({ force: false });
-    console.log(`------------ ORIGINAL DOC ${doc.id} ------------`)
-    console.log(JSON.stringify(doc, null, 2))
-  
     const [document] = await DkaDocument.findOrCreate({
       where: {
         id: doc.id,
         img: doc.img,
         title: doc.title,
-        dates: JSON.stringify(doc.dates),
+        dates: stringify(doc.dates),
         description: doc.description,
-        source: JSON.stringify(doc.source) || null,
-        creator: JSON.stringify(doc.creator) || null,
+        source: stringify(doc.source) || null,
+        creator: stringify(doc.creator) || null,
         originalUrl: doc.originalUrl,
       },
       defaults: {
         id: doc.id,
         img: doc.img,
         title: doc.title,
-        dates: JSON.stringify(doc.dates),
+        dates: stringify(doc.dates),
         description: doc.description,
-        source: JSON.stringify(doc.source) || null,
-        creator: JSON.stringify(doc.creator) || null,
+        source: stringify(doc.source) || null,
+        creator: stringify(doc.creator) || null,
         originalUrl: doc.originalUrl,
       }
     });
@@ -52,71 +49,20 @@ export const loadIntoDataBase = async (originalDoc) => {
     }
   
     const [topics, subtopics] = await handleTopics(doc.relationships.topics);
-    console.log(JSON.stringify(topics, null, 2))
-    console.log(JSON.stringify(subtopics, null, 2))
+    logger.info(stringify(topics, null, 2))
+    logger.info(stringify(subtopics, null, 2))
     await document.addSubtopics(subtopics);
     try {
       await document.addTopics(topics);
     } catch (error) {
-      console.error('Error while handling topics for document ' + doc.id);
+      logger.error('Error while handling topics for document ' + doc.id);
       throw new Error(error);
     }
     
-    // remove this later
-    // const test = await DkaDocument.findOne({
-    //   where: {
-    //     id: doc.id
-    //   },
-    //   include: [ 
-    //     {
-    //       model: Coverage,
-    //       attributes: ['name'],
-    //       through: {
-    //         attributes: []
-    //       }
-    //     },
-    //     {
-    //       model: Type,
-    //       attributes: ['name'],
-    //       through: {
-    //         attributes: []
-    //       }
-    //     },
-    //     {
-    //       model: Subcollection,
-    //       attributes: ['name'],
-    //       through: {
-    //         attributes: []
-    //       }
-    //     },
-    //     {
-    //       model: Contributor,
-    //       attributes: ['name', 'role'],
-    //       through: {
-    //         attributes: []
-    //       }
-    //     },
-    //     {
-    //       model: Subtopic,
-    //       attributes: ['name'],
-    //       through: {
-    //         attributes: []
-    //       },
-    //       include: [
-    //         {
-    //           model: Topic,
-    //           attributes: ['name']
-    //         }
-    //       ]
-    //     },
-    //    ]
-    // });
-  
-    console.log(`------------ SAVED DOC ${doc.id} ------------`)
-    console.log(JSON.stringify(document, null, 2))
+    logger.info(`Saved document ${doc.id}`, { documentId: doc.id, documentTitle: doc.title })
   } catch (error) {
-    console.error('Error while loading document ' + doc.id + ' into db');
-    throw new Error(error);
+    logger.error('Error while loading document ' + doc.id + ' into db', { error });
+    throw error;
   }
 }
 
@@ -144,7 +90,7 @@ export async function handleRelation (
     
     return results;
   } catch (error) {
-    console.error('Error while handling document relation: ' + relationModel);
+    logger.error('Error while handling document relation: ' + relationModel);
     throw new Error(error);
   }
 }
@@ -184,7 +130,7 @@ async function handleTopics (inputData) {
     const uniqueTopics = getUniqueTopics(topics);
     return [uniqueTopics, subtopics]
   } catch (error) {
-    console.error('Error while handling topic creation');
+    logger.error('Error while handling topic creation');
     throw new Error(error)
   }
 }
