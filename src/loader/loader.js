@@ -50,8 +50,6 @@ export const loadIntoDataBase = async (originalDoc) => {
     }
   
     const [topics, subtopics] = await handleTopics(doc.relationships.topics);
-    logger.info(stringify(topics, null, 2))
-    logger.info(stringify(subtopics, null, 2))
     await document.addSubtopics(subtopics);
     try {
       await document.addTopics(topics);
@@ -60,7 +58,7 @@ export const loadIntoDataBase = async (originalDoc) => {
       throw new Error(error);
     }
     
-    logger.info(`Saved document ${doc.id}`, { documentId: doc.id, documentTitle: doc.title })
+    logger.info({ documentId: doc.id, documentTitle: doc.title }, `Saved document ${doc.id}`)
   } catch (error) {
     logger.error('Error while loading document ' + doc.id + ' into db', { error });
     throw new Error(error.message);

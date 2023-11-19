@@ -25,7 +25,7 @@ async function getParsedXml (id: number): Promise<TOriginalSchema> {
 }
 
 async function scrape (from: number, to: number) {
-  logger.info('Scraping documents', { from, to })
+  logger.info({ from, to }, 'Scraping documents')
   for (let id = from; id < to; id++) {
     const dkaDocument = await getParsedXml(id);
     await loadIntoDataBase(dkaDocument);
