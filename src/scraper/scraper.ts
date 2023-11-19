@@ -4,7 +4,9 @@ import { OriginalSchema, TOriginalSchema } from "./scraper.models";
 import { BASE_URL, MAX_RECORDS } from './scraper.constants';
 import { findLastScrapedId, getLatestDocumentId, logValidationError, transformToId } from './scraper.utils';
 import { loadIntoDataBase } from "../loader/loader";
-import { logger } from "../util/logger";
+import { logger, sleep } from "../util";
+
+const SLEEP_BETWEEN_DOCS = process.env.SCRAPER_SLEEP_BETWEEN_DOCS ?? 3000
 
 async function getParsedXml (id: number): Promise<TOriginalSchema> {
   try {
@@ -23,12 +25,13 @@ async function getParsedXml (id: number): Promise<TOriginalSchema> {
 }
 
 async function scrape (from: number, to: number) {
-  logger.info('Scraping documents', from, to)
+  logger.info('Scraping documents', { from, to })
   for (let id = from; id < to; id++) {
     const dkaDocument = await getParsedXml(id);
     await loadIntoDataBase(dkaDocument);
+    await sleep(SLEEP_BETWEEN_DOCS);
   }
-  console.log('Finished scraping...')
+  logger.info('Finished scraping...')
 }
 
 async function findIdsToScrape (): Promise<Array<number>> {
@@ -50,7 +53,7 @@ export async function scrapeDocuments () {
     const [from, to] = await findIdsToScrape();
     await scrape(from, to);
   } catch (error) {
-    console.error('Error while scraping documents');
-    throw new Error(error);
+    logger.error('Error while scraping documents', { error });
+    throw error;
   }
 }
