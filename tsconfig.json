@@ -21,7 +21,7 @@
   },
   "include": [
     "src/**/*.ts"
-, "src/entities/coverage.entity.js", "src/entities/document.entity.js", "src/entities/index.js", "src/entities/constants.js", "src/entities/topic.entity.js", "src/entities/type.entity.js", "src/loader/loader.js", "src/db.js"  ],
+, "src/entities/coverage.entity.js", "src/entities/document.entity.js", "src/entities/index.js", "src/entities/constants.js", "src/entities/topic.entity.js", "src/entities/type.entity.js", "src/loader/loader.js", "src/db.js", "src/util/logger.js"  ],
 "exclude": [
   "src/**/*.mock.ts"
 ]
