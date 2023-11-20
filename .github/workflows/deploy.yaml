@@ -1,8 +1,9 @@
 name: Deploy
 run-name: Deploying to VPS
-on:
-  release:
-    types: [published]
+on: [push]
+#on:
+#  release:
+#    types: [published]
 
 jobs:
   deploy:
