@@ -20,7 +20,7 @@ jobs:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.TARGET }}
           SCRIPT_AFTER: |
-            cd /home/${{ secrets.REMOTE_USER }}/dka/scraper;
+            cd /home/${{ secrets.REMOTE_USER }}/scraper;
             npm i;
             npm run build;
             pm2 start /home/${{ secrets.REMOTE_USER }}/scraper/dka-scraper.config.js
