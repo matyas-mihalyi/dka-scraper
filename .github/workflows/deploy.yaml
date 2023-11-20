@@ -19,10 +19,9 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.TARGET }}
-          EXCLUDE: "/dist/, /node_modules/"
           SCRIPT_AFTER: |
             cd /home/${{ secrets.REMOTE_USER }}/dka/scraper
             npm i
-            npm build
+            npm run build
             pm2 start /home/${{ secrets.REMOTE_USER }}/scraper/dka-scraper.config.js
 
