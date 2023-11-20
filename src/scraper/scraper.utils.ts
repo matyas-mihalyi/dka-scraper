@@ -46,7 +46,7 @@ export async function findLastScrapedId (): Promise<number> {
     logger.info('Last scraper document id is ' + lastDoc[0]?.id);
     return lastDoc[0]?.id ?? 0;
   } catch (error) {
-    logger.error('Error while trying to find last scraped document\'s id', error);
+    logger.error({ error },'Error while trying to find last scraped document\'s id');
     throw new Error('Error while trying to find last scraped document\'s id');
   }
 }
@@ -66,7 +66,7 @@ async function getLastDocId (numberOfDocs:string, offset: string): Promise<numbe
     const numberString = getNumbersFromString(urlOfLastDoc);
     return Number(numberString);
   } catch (error: unknown) {
-    logger.error('Error while getting last doc id', error);
+    logger.error({error}, 'Error while getting last doc id');
     throw new Error((error as Error).message);
   }
 }
@@ -78,7 +78,7 @@ async function getNumberOfDocs (): Promise<string> {
     const string = $('b:first-child').text();
     return getNumbersFromString(string);
   } catch (error: unknown) {
-    logger.error('Error while getting number of docs', error);
+    logger.error({error}, 'Error while getting number of docs');
     throw new Error((error as Error).message);
   }
 }

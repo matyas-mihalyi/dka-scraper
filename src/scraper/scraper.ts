@@ -20,7 +20,7 @@ async function getParsedXml (id: number): Promise<TOriginalSchema> {
   }
   catch (err: unknown) {
     logValidationError(id.toString(), err as Error);
-    logger.error('Failed to get parsed XML for document ' + id, { error: err })
+    logger.error({ error: err }, 'Failed to get parsed XML for document ' + id)
   }
 }
 
@@ -53,7 +53,7 @@ export async function scrapeDocuments () {
     const [from, to] = await findIdsToScrape();
     await scrape(from, to);
   } catch (error) {
-    logger.error('Error while scraping documents', { error });
+    logger.error({ error }, 'Error while scraping documents');
     throw error;
   }
 }

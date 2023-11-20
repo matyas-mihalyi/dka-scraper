@@ -54,13 +54,13 @@ export const loadIntoDataBase = async (originalDoc) => {
     try {
       await document.addTopics(topics);
     } catch (error) {
-      logger.error('Error while handling topics for document ' + doc.id);
-      throw new Error(error);
+      logger.error({ error }, 'Error while handling topics for document ' + doc.id);
+      throw error;
     }
     
     logger.info({ documentId: doc.id, documentTitle: doc.title }, `Saved document ${doc.id}`)
   } catch (error) {
-    logger.error('Error while loading document ' + doc.id + ' into db', { error });
+    logger.error({ error }, 'Error while loading document ' + doc.id + ' into db');
     throw new Error(error.message);
   }
 }
@@ -89,8 +89,8 @@ export async function handleRelation (
     
     return results;
   } catch (error) {
-    logger.error('Error while handling document relation: ' + relationModel);
-    throw new Error(error);
+    logger.error({error}, 'Error while handling document relation: ' + relationModel);
+    throw error;
   }
 }
 
@@ -129,8 +129,8 @@ async function handleTopics (inputData) {
     const uniqueTopics = getUniqueTopics(topics);
     return [uniqueTopics, subtopics]
   } catch (error) {
-    logger.error('Error while handling topic creation');
-    throw new Error(error)
+    logger.error({error}, 'Error while handling topic creation');
+    throw error
   }
 }
 
