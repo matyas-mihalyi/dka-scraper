@@ -39,7 +39,10 @@ async function findIdsToScrape (): Promise<Array<number>> {
   const lastIdInDb = await findLastScrapedId();
 
   const from = lastIdInDb + 1;
-  const to = lastAvailableDocId > MAX_RECORDS ? MAX_RECORDS : lastAvailableDocId;
+  const to = lastAvailableDocId - lastIdInDb > MAX_RECORDS ?
+    lastIdInDb + MAX_RECORDS 
+    :
+    lastAvailableDocId;
 
   if (from > lastAvailableDocId) {
     throw new Error('No ids to scrape');
