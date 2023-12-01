@@ -5,6 +5,7 @@ module.exports = {
     script : "npm",
     args : "run start --prefix /home/dka/scraper",
     watch : true,
-    cron: "0 3 * * *"
+    cron: "0 3 * * *",
+    autorestart: false
   }]
 }
