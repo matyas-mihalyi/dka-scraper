@@ -27,7 +27,7 @@ DkaDocument.init({
   },
 
   description: {
-    type: DataTypes.STRING
+    type: DataTypes.STRING(5000)
   },
 
   source: {
