@@ -14,7 +14,7 @@ export const loadIntoDataBase = async (originalDoc) => {
         img: doc.img,
         title: doc.title,
         dates: stringify(doc.dates),
-        description: doc.description,
+        description: doc.description || "", // todo: why this might be undefined?
         source: stringify(doc.source) || null,
         creator: stringify(doc.creator) || null,
         originalUrl: doc.originalUrl,
