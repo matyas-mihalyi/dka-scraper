@@ -9,16 +9,18 @@ import {
   TOriginalContributorCorp } from '../../scraper/scraper.models';
 import { ISource } from '../transformer.types';
 
+const MAX_DESC_LENGTH = 5000;
+
 export const getDescription = (description: TOriginalDescription | Array<TOriginalDescription>): string => {
   if (description instanceof Array) {
     const containsDescription = !!description.filter(obj => obj.Description !== undefined).length;
     const key = containsDescription ? 'Description' : 'Caption';
     const strings = findAllPropertiesInArrayOfObjects(key, description);
     const ocrTexts = findAllPropertiesInArrayOfObjects('OCRText', description);
-    return concatTextWithNewLines([...strings, ...ocrTexts]);
+    return concatTextWithNewLines([...strings, ...ocrTexts]).substring(0, MAX_DESC_LENGTH);
   } else {
     const ocrText = description.OCRText?._text ? "\n\r" + description.OCRText._text : ""
-    return getPreferredString(description.Description?._text, description.Caption?._text) + ocrText;
+    return (getPreferredString(description.Description?._text, description.Caption?._text) + ocrText).substring(0, MAX_DESC_LENGTH);
   }
 }
 
