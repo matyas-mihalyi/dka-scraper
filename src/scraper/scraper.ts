@@ -28,8 +28,10 @@ async function scrape (from: number, to: number) {
   logger.info({ from, to }, 'Scraping documents')
   for (let id = from; id < to; id++) {
     const dkaDocument = await getParsedXml(id);
-    await loadIntoDataBase(dkaDocument);
-    await sleep(SLEEP_BETWEEN_DOCS);
+    if (dkaDocument) {
+      await loadIntoDataBase(dkaDocument);
+      await sleep(SLEEP_BETWEEN_DOCS);
+    }
   }
   logger.info('Finished scraping...')
 }
