@@ -97,7 +97,7 @@ export async function handleRelation (
 async function handleTopics (inputData) {
   try {
     let subtopics = [];
-    
+    // todo: look up ids and only findOrCreate with id. special characters may cause error. https://github.com/sequelize/sequelize/issues/7941
     const topics = await Promise.all(inputData.map(async (topicData) => {
       const [t] = await Topic.findOrCreate({
         where: {
@@ -117,7 +117,7 @@ async function handleTopics (inputData) {
         }
       });
       
-      if (!await t.hasSubtopic(subtopic)) {
+      if (await t.hasSubtopic(subtopic) === false) {
         await t.addSubtopic(subtopic);
       }
   
