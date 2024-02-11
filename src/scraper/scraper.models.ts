@@ -34,7 +34,10 @@ const Contributor = z.object({
   RoleOfContributor: TextData.optional(),
   ContributorFamilyName: TextData,
   ContributorGivenName: TextData.optional(),
-  ContributorInvert: TextData
+  ContributorInvert: TextData,
+  ContributorOtherNameElement: TextData.optional(),
+  ContributorOtherName1: TextData.optional(),
+  ContributorOtherName2: TextData.optional(),
 });
 
 export type TOriginalContributor = z.infer<typeof Contributor>;
@@ -44,7 +47,8 @@ export type TOriginalContributorCorp = z.infer<typeof ContributorCorp>;
 const Dates = z.object({
   Pevent: TextData,
   PdateChar: TextData,
-  Pdate: TextData
+  Pdate: TextData,
+  PdateNote: TextData.optional(),
 });
 
 export type TOriginalDates = z.infer<typeof Dates>;
@@ -137,10 +141,14 @@ const Operator = z.object({
 });
 
 const Creator = z.object({
+  SortOfCreator: TextData.optional(),
   RoleOfCreator: TextData.optional(),
   CreatorFamilyName: TextData,
   CreatorGivenName: TextData.optional(),
-  CreatorInvert: TextData.optional()
+  CreatorInvert: TextData.optional(),
+  CreatorOtherNameElement: TextData.optional(),
+  CreatorOtherName1: TextData.optional(),
+  CreatorOtherName2: TextData.optional(),
 });
 
 export type TOriginalCreator = z.infer<typeof Creator>;
@@ -156,43 +164,51 @@ const OriginalDocument = z.object({
   OriginalTitle: TextData,
   OriginalCreator: TextData.optional(),
   OriginalAttendance: TextData.optional(),
+  OriginalISBN: TextData.optional(),
+  OriginalSeries: TextData.optional(),
+  OriginalISSN: TextData.optional(),
+  OriginalExtent: TextData.optional(),
+  OriginalScale: TextData.optional(),
+  Technology: TextData.optional(),
+  Location: TextData.optional(),
+  OriginalType: TextData.optional(),
 });
 
 const Corporate = z.object({
-  SortOfCorporate: TextData,	
-  RoleOfCorporate: TextData,	
+  SortOfCorporate: TextData.optional(),
+  RoleOfCorporate: TextData.optional(),
   CorporateName: TextData,
-  PlaceOfCorporate: TextData,	
-  CountryOfCorporate: TextData,	
+  PlaceOfCorporate: TextData.optional(),	
+  CountryOfCorporate: TextData.optional(),
 })
 
 const Publisher = z.object({
   PublisherName	: TextData, 
-  PublisherPlace: TextData,	
-  CountryCode: TextData,	
+  PublisherPlace: TextData.optional()	,
+  CountryCode: TextData.optional()
 })
 
 const Series = z.object({
   NameOfSource: TextData,	
-  URLOfSource: TextData,	
-  NoteOfSource: TextData,	
+  URLOfSource: TextData.optional(),
+  NoteOfSource: TextData.optional()	
 })
 
 const Rights = z.object({
-  OwnerOfRights: TextData,
-  YearOfRights: TextData,	
-  NoteOfRights: TextData,
-  CCCode: TextData, 
+  OwnerOfRights: TextData.optional(),
+  YearOfRights: TextData.optional(),
+  NoteOfRights: TextData.optional(),
+  CCCode: TextData.optional() 
 })
 
 const Audience = z.object({
   Audience: TextData,	
-  AudienceRefinement: TextData,	
+  AudienceRefinement: TextData.optional()	
 })
 
 const Note = z.object({
-  NoteForRecord: TextData,
-  GeneralNote: TextData,
+  NoteForRecord: TextData.optional(),
+  GeneralNote: TextData.optional(),
 })
 
 export const OriginalSchema = z.object({
