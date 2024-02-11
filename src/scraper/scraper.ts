@@ -42,7 +42,7 @@ async function findIdsToScrape (): Promise<Array<number>> {
 
   const from = lastIdInDb + 1;
   const to = lastAvailableDocId - lastIdInDb > MAX_RECORDS ?
-    lastIdInDb + MAX_RECORDS 
+    lastIdInDb + +MAX_RECORDS 
     :
     lastAvailableDocId;
 
