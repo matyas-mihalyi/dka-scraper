@@ -5,7 +5,8 @@ const TextData = z.object({_text: z.string()});
 const Identifier = z.object({
   URLOfDoc: TextData,
   Filename: TextData,
-  Thumbnail: TextData
+  Thumbnail: TextData,
+  PlaceOfMester: TextData.optional()
 });
 
 export type TOriginalIdentifier = z.infer<typeof Identifier>
@@ -115,12 +116,19 @@ const Format = z.object({
 const Quality = z.object({
   FinestFormat: TextData,
   MaxImageSize: TextData,
-  FinestResolution: TextData.optional()
+  LengthOfMovie: TextData.optional(),
+  FinestResolution: TextData.optional(),
+  ColorOfImage: TextData.optional(),
+  MaxColorDepth: TextData.optional(),
+  CompressionRatio: TextData.optional(),
+  CompressionQuality: TextData.optional(),
+  NoteOfQuality: TextData.optional()
 })
 .optional();
 
 const Status = z.object({
-  StatusOfRecord: TextData 
+  StatusOfRecord: TextData,
+  StatusOfDocument: TextData.optional()
 });
 
 const Operator = z.object({
@@ -150,6 +158,43 @@ const OriginalDocument = z.object({
   OriginalAttendance: TextData.optional(),
 });
 
+const Corporate = z.object({
+  SortOfCorporate: TextData,	
+  RoleOfCorporate: TextData,	
+  CorporateName: TextData,
+  PlaceOfCorporate: TextData,	
+  CountryOfCorporate: TextData,	
+})
+
+const Publisher = z.object({
+  PublisherName	: TextData, 
+  PublisherPlace: TextData,	
+  CountryCode: TextData,	
+})
+
+const Series = z.object({
+  NameOfSource: TextData,	
+  URLOfSource: TextData,	
+  NoteOfSource: TextData,	
+})
+
+const Rights = z.object({
+  OwnerOfRights: TextData,
+  YearOfRights: TextData,	
+  NoteOfRights: TextData,
+  CCCode: TextData, 
+})
+
+const Audience = z.object({
+  Audience: TextData,	
+  AudienceRefinement: TextData,	
+})
+
+const Note = z.object({
+  NoteForRecord: TextData,
+  GeneralNote: TextData,
+})
+
 export const OriginalSchema = z.object({
   dkalista: z.object({
     DKA: z.object({
@@ -173,13 +218,13 @@ export const OriginalSchema = z.object({
       relation: z.union([Relation, z.array(Relation)]).optional(),
       contributor: z.union([Contributor, z.array(Contributor)]).optional(),
       original_document: z.union([OriginalDocument, z.array(OriginalDocument)]).optional(),
-      // unnecessary
-      note: z.any(),
-      rights: z.any(),
-      publisher: z.any(),
-      corporate: z.any(),
-      operator: z.any(),
-      series: z.any()
+      note: z.union([Note, z.array(Note)]).optional(),
+      rights: z.union([Rights, z.array(Rights)]).optional(),
+      publisher: z.union([Publisher, z.array(Publisher)]).optional(),
+      corporate: z.union([Corporate, z.array(Corporate)]).optional(),
+      operator: z.union([Operator, z.array(Operator)]).optional(),
+      series: z.union([Series, z.array(Series)]).optional(),
+      audience: z.union([Audience, z.array(Audience)]).optional(),
     }).catchall(z.any())
   })
 });
