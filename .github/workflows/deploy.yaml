@@ -1,6 +1,6 @@
 name: Deploy
 run-name: Deploying to VPS
-on: [push]
+on: [release]
 #on:
 #  release:
 #    types: [published]
