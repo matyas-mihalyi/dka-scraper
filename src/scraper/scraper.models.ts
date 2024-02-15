@@ -5,7 +5,8 @@ const TextData = z.object({_text: z.string()});
 const Identifier = z.object({
   URLOfDoc: TextData,
   Filename: TextData,
-  Thumbnail: TextData
+  Thumbnail: TextData,
+  PlaceOfMester: TextData.optional()
 });
 
 export type TOriginalIdentifier = z.infer<typeof Identifier>
@@ -33,7 +34,10 @@ const Contributor = z.object({
   RoleOfContributor: TextData.optional(),
   ContributorFamilyName: TextData,
   ContributorGivenName: TextData.optional(),
-  ContributorInvert: TextData
+  ContributorInvert: TextData,
+  ContributorOtherNameElement: TextData.optional(),
+  ContributorOtherName1: TextData.optional(),
+  ContributorOtherName2: TextData.optional(),
 });
 
 export type TOriginalContributor = z.infer<typeof Contributor>;
@@ -43,7 +47,8 @@ export type TOriginalContributorCorp = z.infer<typeof ContributorCorp>;
 const Dates = z.object({
   Pevent: TextData,
   PdateChar: TextData,
-  Pdate: TextData
+  Pdate: TextData,
+  PdateNote: TextData.optional(),
 });
 
 export type TOriginalDates = z.infer<typeof Dates>;
@@ -115,12 +120,19 @@ const Format = z.object({
 const Quality = z.object({
   FinestFormat: TextData,
   MaxImageSize: TextData,
-  FinestResolution: TextData.optional()
+  LengthOfMovie: TextData.optional(),
+  FinestResolution: TextData.optional(),
+  ColorOfImage: TextData.optional(),
+  MaxColorDepth: TextData.optional(),
+  CompressionRatio: TextData.optional(),
+  CompressionQuality: TextData.optional(),
+  NoteOfQuality: TextData.optional()
 })
 .optional();
 
 const Status = z.object({
-  StatusOfRecord: TextData 
+  StatusOfRecord: TextData,
+  StatusOfDocument: TextData.optional()
 });
 
 const Operator = z.object({
@@ -129,10 +141,14 @@ const Operator = z.object({
 });
 
 const Creator = z.object({
+  SortOfCreator: TextData.optional(),
   RoleOfCreator: TextData.optional(),
   CreatorFamilyName: TextData,
   CreatorGivenName: TextData.optional(),
-  CreatorInvert: TextData.optional()
+  CreatorInvert: TextData.optional(),
+  CreatorOtherNameElement: TextData.optional(),
+  CreatorOtherName1: TextData.optional(),
+  CreatorOtherName2: TextData.optional(),
 });
 
 export type TOriginalCreator = z.infer<typeof Creator>;
@@ -148,7 +164,52 @@ const OriginalDocument = z.object({
   OriginalTitle: TextData,
   OriginalCreator: TextData.optional(),
   OriginalAttendance: TextData.optional(),
+  OriginalISBN: TextData.optional(),
+  OriginalSeries: TextData.optional(),
+  OriginalISSN: TextData.optional(),
+  OriginalExtent: TextData.optional(),
+  OriginalScale: TextData.optional(),
+  Technology: TextData.optional(),
+  Location: TextData.optional(),
+  OriginalType: TextData.optional(),
 });
+
+const Corporate = z.object({
+  SortOfCorporate: TextData.optional(),
+  RoleOfCorporate: TextData.optional(),
+  CorporateName: TextData,
+  PlaceOfCorporate: TextData.optional(),	
+  CountryOfCorporate: TextData.optional(),
+})
+
+const Publisher = z.object({
+  PublisherName	: TextData, 
+  PublisherPlace: TextData.optional()	,
+  CountryCode: TextData.optional()
+})
+
+const Series = z.object({
+  NameOfSource: TextData,	
+  URLOfSource: TextData.optional(),
+  NoteOfSource: TextData.optional()	
+})
+
+const Rights = z.object({
+  OwnerOfRights: TextData.optional(),
+  YearOfRights: TextData.optional(),
+  NoteOfRights: TextData.optional(),
+  CCCode: TextData.optional() 
+})
+
+const Audience = z.object({
+  Audience: TextData,	
+  AudienceRefinement: TextData.optional()	
+})
+
+const Note = z.object({
+  NoteForRecord: TextData.optional(),
+  GeneralNote: TextData.optional(),
+})
 
 export const OriginalSchema = z.object({
   dkalista: z.object({
@@ -173,13 +234,13 @@ export const OriginalSchema = z.object({
       relation: z.union([Relation, z.array(Relation)]).optional(),
       contributor: z.union([Contributor, z.array(Contributor)]).optional(),
       original_document: z.union([OriginalDocument, z.array(OriginalDocument)]).optional(),
-      // unnecessary
-      note: z.any(),
-      rights: z.any(),
-      publisher: z.any(),
-      corporate: z.any(),
-      operator: z.any(),
-      series: z.any()
+      note: z.union([Note, z.array(Note)]).optional(),
+      rights: z.union([Rights, z.array(Rights)]).optional(),
+      publisher: z.union([Publisher, z.array(Publisher)]).optional(),
+      corporate: z.union([Corporate, z.array(Corporate)]).optional(),
+      operator: z.union([Operator, z.array(Operator)]).optional(),
+      series: z.union([Series, z.array(Series)]).optional(),
+      audience: z.union([Audience, z.array(Audience)]).optional(),
     }).catchall(z.any())
   })
 });
