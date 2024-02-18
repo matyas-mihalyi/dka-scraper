@@ -11,37 +11,60 @@ DkaDocument.init({
     primaryKey: true,
   },
 
-  img: {
-    type: DataTypes.STRING,
+  identifier: {
+    type: DataTypes.JSONB,
     allowNull: false
   },
 
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  
-  dates: {
+  dkaTitle: {
     type: DataTypes.JSONB,
     allowNull: false
+  },
+
+  date: {
+    type: DataTypes.JSONB,
+    allowNull: false
+  },
+
+  status: {
+    type: DataTypes.JSONB,
+  },
+
+  format: {
+    type: DataTypes.JSONB,
   },
 
   description: {
-    type: DataTypes.STRING(5000)
-  },
-
-  source: {
-    type: DataTypes.JSONB
-  },
-
-  creator: {
     type: DataTypes.JSONB,
   },
 
-  originalUrl: {
-    type: DataTypes.JSONB
-  }
+  quality: {
+    type: DataTypes.JSONB,
+  },
 
+  otherTitle: {
+    type: DataTypes.JSONB,
+  },
+
+  relation: {
+    type: DataTypes.JSONB,
+  },
+
+  relation: {
+    type: DataTypes.JSONB,
+  },
+
+  originalDocument: {
+    type: DataTypes.JSONB,
+  },
+
+  note: {
+    type: DataTypes.JSONB,
+  },
+
+  rights: {
+    type: DataTypes.JSONB,
+  },
 }, {
   sequelize,
   modelName: DOCUMENT_MODEL,
