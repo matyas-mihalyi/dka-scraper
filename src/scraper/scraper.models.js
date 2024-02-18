@@ -1,27 +1,25 @@
-import { z } from 'zod';
+import Joi from 'joi';
 
-const TextData = z.object({_text: z.string()});
+const TextData = Joi.object({_text: Joi.string().required()});
 
-const Identifier = z.object({
+const Identifier = Joi.object({
   URLOfDoc: TextData,
   Filename: TextData,
   Thumbnail: TextData,
   PlaceOfMester: TextData.optional()
 });
 
-export type TOriginalIdentifier = z.infer<typeof Identifier>
-
-const DkaTitle = z.object({
+const DkaTitle = Joi.object({
   MainTitle: TextData,
   UniformTitle: TextData
 });
 
-const OtherTitle = z.object({
+const OtherTitle = Joi.object({
   OtherTitle: TextData,
   TitleRefinement: TextData.optional()
 });
 
-const ContributorCorp = z.object({
+const ContributorCorp = Joi.object({
   SortOfContributorCorp: TextData.optional(),
   RoleOfContributorCorp: TextData,
   ContributorCorpName: TextData,
@@ -29,7 +27,7 @@ const ContributorCorp = z.object({
   CountryOfContributorCorp: TextData.optional()
 });
 
-const Contributor = z.object({
+const Contributor = Joi.object({
   SortOfContributor: TextData.optional(),
   RoleOfContributor: TextData.optional(),
   ContributorFamilyName: TextData,
@@ -40,84 +38,56 @@ const Contributor = z.object({
   ContributorOtherName2: TextData.optional(),
 });
 
-export type TOriginalContributor = z.infer<typeof Contributor>;
-
-export type TOriginalContributorCorp = z.infer<typeof ContributorCorp>;
-
-const Dates = z.object({
+const Dates = Joi.object({
   Pevent: TextData,
   PdateChar: TextData,
   Pdate: TextData,
   PdateNote: TextData.optional(),
 });
 
-export type TOriginalDates = z.infer<typeof Dates>;
-
-const Types = z.object({
-  NameOfType: z.array(TextData).or(TextData)
+const Types = Joi.object({
+  NameOfType: Joi.alternatives().try(Joi.array().items(TextData), TextData)
 });
 
-export type TOriginalType = z.infer<typeof Types>;  
-
-const SubCollection = z.object({
+const SubCollection = Joi.object({
   NameOfCollection: TextData,
   CodeInCollection: TextData.optional()
 });
 
-export type TOriginalSubCollection = z.infer<typeof SubCollection>;  
-
-const Source = z.object({
+const Source = Joi.object({
   NameOfSource: TextData,
   URLOfSource: TextData.optional()
 });
 
-export type TOriginalSource = z.infer<typeof Source>;
-
-const Topic = z.object({
+const Topic = Joi.object({
   Topic: TextData,
   Subtopic: TextData
 });
 
-export type TOriginalTopic = z.infer<typeof Topic>
-
-const Subject = z.object({
+const Subject = Joi.object({
   Keyword: TextData,
   SubjectRefinement: TextData
 });
 
-const Coverage = z.object({
+const Coverage = Joi.object({
   CoverageKeyword: TextData,
   CoverageRefinement: TextData
 });
 
-export type TOriginalCoverage = z.infer<typeof Coverage>
-
-const Description = z.object({
+const Description = Joi.object({
   Description: TextData.optional(),
-  Caption: TextData,
-  OCRText: TextData.optional(),
-  LanguageOfDocument: TextData.optional()
-}).or(z.object({
-  Description: TextData,
   Caption: TextData.optional(),
   OCRText: TextData.optional(),
   LanguageOfDocument: TextData.optional()
-})).or(z.object({
-  Description: TextData.optional(),
-  Caption: TextData.optional(),
-  OCRText: TextData,
-  LanguageOfDocument: TextData
-}));
+});
 
-export type TOriginalDescription = z.infer<typeof Description>
-
-const Format = z.object({
+const Format = Joi.object({
   FormatName: TextData,
   Metadata: TextData,
   NoteForMetadata: TextData.optional()
 });
 
-const Quality = z.object({
+const Quality = Joi.object({
   FinestFormat: TextData,
   MaxImageSize: TextData,
   LengthOfMovie: TextData.optional(),
@@ -130,17 +100,17 @@ const Quality = z.object({
 })
 .optional();
 
-const Status = z.object({
+const Status = Joi.object({
   StatusOfRecord: TextData,
   StatusOfDocument: TextData.optional()
 });
 
-const Operator = z.object({
+const Operator = Joi.object({
   RoleOfOperator: TextData,
   NameOfOperator: TextData
 });
 
-const Creator = z.object({
+const Creator = Joi.object({
   SortOfCreator: TextData.optional(),
   RoleOfCreator: TextData.optional(),
   CreatorFamilyName: TextData,
@@ -151,16 +121,12 @@ const Creator = z.object({
   CreatorOtherName2: TextData.optional(),
 });
 
-export type TOriginalCreator = z.infer<typeof Creator>;
-
-const Relation = z.object({
+const Relation = Joi.object({
   NameOfRelation: TextData,
   URLOfRelation: TextData
 });
 
-export type TOriginalRelation = z.infer<typeof Relation>;
-
-const OriginalDocument = z.object({
+const OriginalDocument = Joi.object({
   OriginalTitle: TextData,
   OriginalCreator: TextData.optional(),
   OriginalAttendance: TextData.optional(),
@@ -174,7 +140,7 @@ const OriginalDocument = z.object({
   OriginalType: TextData.optional(),
 });
 
-const Corporate = z.object({
+const Corporate = Joi.object({
   SortOfCorporate: TextData.optional(),
   RoleOfCorporate: TextData.optional(),
   CorporateName: TextData,
@@ -182,67 +148,72 @@ const Corporate = z.object({
   CountryOfCorporate: TextData.optional(),
 })
 
-const Publisher = z.object({
+const Publisher = Joi.object({
   PublisherName	: TextData, 
   PublisherPlace: TextData.optional()	,
   CountryCode: TextData.optional()
 })
 
-const Series = z.object({
+const Series = Joi.object({
   NameOfSource: TextData,	
   URLOfSource: TextData.optional(),
   NoteOfSource: TextData.optional()	
 })
 
-const Rights = z.object({
+const Rights = Joi.object({
   OwnerOfRights: TextData.optional(),
   YearOfRights: TextData.optional(),
   NoteOfRights: TextData.optional(),
   CCCode: TextData.optional() 
 })
 
-const Audience = z.object({
+const Audience = Joi.object({
   Audience: TextData,	
   AudienceRefinement: TextData.optional()	
 })
 
-const Note = z.object({
+const Note = Joi.object({
   NoteForRecord: TextData.optional(),
   GeneralNote: TextData.optional(),
 })
 
-export const OriginalSchema = z.object({
-  dkalista: z.object({
-    DKA: z.object({
-      identifier: z.union([Identifier, z.array(Identifier)]),
+/**
+  * @type{Joi}
+  */
+export const OriginalSchema = Joi.object({
+  dkalista: Joi.object({
+    DKA: Joi.object({
+      identifier: Joi.alternatives().try(Identifier, Joi.array().items(Identifier)),
       DKAtitle: DkaTitle,
-      date: z.union([Dates, z.array(Dates)]),
+      date: Joi.alternatives().try(Dates, Joi.array().items(Dates)),
       type: Types,
-      topic: z.union([Topic, z.array(Topic)]),
-      subject: z.union([Subject, z.array(Subject)]),
+      topic: Joi.alternatives().try(Topic, Joi.array().items(Topic)),
+      subject: Joi.alternatives().try(Subject, Joi.array().items(Subject)),
       // optionals
       status: Status.optional(),
-      format: z.union([Format, z.array(Format)]).optional(),
-      contributor_corp: ContributorCorp.or(z.array(ContributorCorp)).optional(),
-      coverage: z.union([Coverage, z.array(Coverage)]).optional(),
-      creator: z.union([Creator, z.array(Creator)]).optional(),
-      description: z.union([Description, z.array(Description)]).optional(),
+      format: Joi.alternatives().try(Format, Joi.array().items(Format)).optional(),
+      contributor_corp: Joi.alternatives().try(ContributorCorp, Joi.array().items(ContributorCorp)).optional(),
+      coverage: Joi.alternatives().try(Coverage, Joi.array().items(Coverage)).optional(),
+      creator: Joi.alternatives().try(Creator, Joi.array().items(Creator)).optional(),
+      description: Joi.alternatives().try(Description, Joi.array().items(Description)).optional(),
       quality: Quality,
-      source: z.union([Source, z.array(Source)]).optional(),
-      subcollection: z.union([SubCollection, z.array(SubCollection)]).optional(),
-      other_title: z.union([OtherTitle, z.array(OtherTitle)]).optional(),
-      relation: z.union([Relation, z.array(Relation)]).optional(),
-      contributor: z.union([Contributor, z.array(Contributor)]).optional(),
-      original_document: z.union([OriginalDocument, z.array(OriginalDocument)]).optional(),
-      note: z.union([Note, z.array(Note)]).optional(),
-      rights: z.union([Rights, z.array(Rights)]).optional(),
-      publisher: z.union([Publisher, z.array(Publisher)]).optional(),
-      corporate: z.union([Corporate, z.array(Corporate)]).optional(),
-      operator: z.union([Operator, z.array(Operator)]).optional(),
-      series: z.union([Series, z.array(Series)]).optional(),
-      audience: z.union([Audience, z.array(Audience)]).optional(),
-    }).catchall(z.any())
+      source: Joi.alternatives().try(Source, Joi.array().items(Source)).optional(),
+      subcollection: Joi.alternatives().try(SubCollection, Joi.array().items(SubCollection)).optional(),
+      other_title: Joi.alternatives().try(OtherTitle, Joi.array().items(OtherTitle)).optional(),
+      relation: Joi.alternatives().try(Relation, Joi.array().items(Relation)).optional(),
+      contributor: Joi.alternatives().try(Contributor, Joi.array().items(Contributor)).optional(),
+      original_document: Joi.alternatives().try(OriginalDocument, Joi.array().items(OriginalDocument)).optional(),
+      note: Joi.alternatives().try(Note, Joi.array().items(Note)).optional(),
+      rights: Joi.alternatives().try(Rights, Joi.array().items(Rights)).optional(),
+      publisher: Joi.alternatives().try(Publisher, Joi.array().items(Publisher)).optional(),
+      corporate: Joi.alternatives().try(Corporate, Joi.array().items(Corporate)).optional(),
+      operator: Joi.alternatives().try(Operator, Joi.array().items(Operator)).optional(),
+      series: Joi.alternatives().try(Series, Joi.array().items(Series)).optional(),
+      audience: Joi.alternatives().try(Audience, Joi.array().items(Audience)).optional(),
+      /*
+        Please note that Joi does not have a direct equivalent to Zod's catchall method. If you want to allow additional properties in your schema,
+        you can use Joi.object().unknown(). However, this will allow any additional properties, not just those that match a specific schema.
+      */
+    })
   })
 });
-
-export type TOriginalSchema = z.infer<typeof OriginalSchema>;

@@ -1,30 +1,31 @@
-const axios = require('axios').default;
+import axios from 'axios';
 import { xml2js } from "xml-js";
-import { OriginalSchema, TOriginalSchema } from "./scraper.models";
-import { BASE_URL, MAX_RECORDS } from './scraper.constants';
-import { findLastScrapedId, getLatestDocumentId, logValidationError, transformToId } from './scraper.utils';
-import { loadIntoDataBase } from "../loader/loader";
-import { logger, sleep } from "../util";
+import { OriginalSchema } from "./scraper.models.js";
+import { BASE_URL, MAX_RECORDS } from './scraper.constants.js';
+import { findLastScrapedId, getLatestDocumentId, logValidationError, transformToId } from './scraper.utils.js';
+import { loadIntoDataBase } from "../loader/loader.js";
+import { logger } from "../util/logger.js"
+import { sleep } from "../util/sleep.js"
 
 const SLEEP_BETWEEN_DOCS = process.env.SCRAPER_SLEEP_BETWEEN_DOCS ?? 3000
 
-async function getParsedXml (id: number): Promise<TOriginalSchema> {
+async function getParsedXml (id) {
   try {
     const docId = transformToId(id);
     const res = await axios.get(BASE_URL + docId + '.xml');
     const xml = await res.data;
-    const parsedXml = xml2js(xml, { compact: true }) as TOriginalSchema;
+    const parsedXml = xml2js(xml, { compact: true });
     
-    OriginalSchema.parse(parsedXml);
+    OriginalSchema.validate(parsedXml);
     return parsedXml;
   }
-  catch (err: unknown) {
-    logValidationError(id.toString(), err as Error);
-    logger.error({ error: err }, 'Failed to get parsed XML for document ' + id)
+  catch (err) {
+    logValidationError(id.toString(), err);
+    logger.error({ err }, 'Failed to get parsed XML for document ' + id)
   }
 }
 
-async function scrape (from: number, to: number) {
+async function scrape (from, to) {
   logger.info({ from, to }, 'Scraping documents')
   for (let id = from; id < to; id++) {
     const dkaDocument = await getParsedXml(id);
@@ -36,7 +37,7 @@ async function scrape (from: number, to: number) {
   logger.info('Finished scraping...')
 }
 
-async function findIdsToScrape (): Promise<Array<number>> {
+async function findIdsToScrape () {
   const lastAvailableDocId = await getLatestDocumentId();
   const lastIdInDb = await findLastScrapedId();
 

@@ -1,153 +1,107 @@
-import stringify from 'fast-safe-stringify'
-import { transformDocument } from "../transformer/transformer";
-import { DkaDocument, Type, Coverage, Topic, Subtopic, Subcollection, Contributor } from "../entities";
-import { sequelize } from "../db";
-import { logger } from '../util';
+import { transform } from '../transformer/transformer.js'
+import { DkaDocument } from '../entities/document.entity.js'
+import {
+  Identifier,
+  DkaTitle,
+  OtherTitle,
+  ContributorCorp,
+  Contributor,
+  Date,
+  Status,
+  Type,
+  SubCollection,
+  Source,
+  Topic,
+  Subject,
+  Coverage,
+  Description,
+  Format,
+  Quality,
+  Operator,
+  Creator,
+  Relation,
+  OriginalDocument,
+  Corporate,
+  Publisher,
+  Series,
+  Rights,
+  Audience,
+  Note
+} from "../entities/entities.js";
+import { sequelize } from "../db.js";
+import { logger } from '../util/logger.js';
 
-export const loadIntoDataBase = async (originalDoc) => {
-  const doc = transformDocument(originalDoc);
+export async function loadIntoDataBase (originalDoc) {
+  const doc = transform(originalDoc);
+  console.log(doc)
   try {
     await sequelize.sync({ force: false });
-    const [document] = await DkaDocument.findOrCreate({
-      where: {
+    console.log(doc.identifier)
+    const document = await DkaDocument.create(
+      {
         id: doc.id,
-        img: doc.img,
-        title: doc.title,
-        dates: stringify(doc.dates),
-        description: doc.description || "", // todo: why this might be undefined?
-        source: stringify(doc.source) || null,
-        creator: stringify(doc.creator) || null,
-        originalUrl: doc.originalUrl,
+        ...(doc.identifier && { identifiers: doc.identifier }),
+        ...(doc.dkaTitle && { dkaTitle: doc.dkaTitle }),
+        ...(doc.otherTitle && { otherTitle: doc.otherTitle }),
+        ...(doc.contributorCorp && { contributorCorps: doc.contributorCorp }),
+        ...(doc.contributor && { contributors: doc.contributor }),
+        ...(doc.date && { dates: doc.date }),
+        ...(doc.type && { types: doc.type }),
+        ...(doc.subcollection && { subcollections: doc.subcollection }),
+        ...(doc.source && { sources: doc.source }),
+        ...(doc.topic && { topics: doc.topic }),
+        ...(doc.subject && { subjects: doc.subject }),
+        ...(doc.coverage && { coverages: doc.coverage }),
+        ...(doc.description && { description: doc.description }),
+        ...(doc.format && { format: doc.format }),
+        ...(doc.quality && { quality: doc.quality }),
+        ...(doc.status && { statuses: doc.status }),
+        ...(doc.operator && { operators: doc.operator }),
+        ...(doc.creator && { creator: doc.creator }),
+        ...(doc.relation && { relations: doc.relation }),
+        ...(doc.originalDocument && { originalDocument: doc.originalDocument }),
+        ...(doc.corporate && { corporate: doc.corporate }),
+        ...(doc.publisher && { publisher: doc.publisher }),
+        ...(doc.series && { series: doc.series }),
+        ...(doc.rights && { rights: doc.rights }),
+        ...(doc.audience && { audiences: doc.audience }),
+        ...(doc.note && { notes: doc.note })
       },
-      defaults: {
-        id: doc.id,
-        img: doc.img,
-        title: doc.title,
-        dates: stringify(doc.dates),
-        description: doc.description,
-        source: stringify(doc.source) || null,
-        creator: stringify(doc.creator) || null,
-        originalUrl: doc.originalUrl,
+      {
+        include: [
+          Identifier,
+          DkaTitle,
+          OtherTitle,
+          ContributorCorp,
+          Contributor,
+          Date,
+          Status,
+          Type,
+          SubCollection,
+          Source,
+          Topic,
+          Subject,
+          Coverage,
+          Description,
+          Format,
+          Quality,
+          Operator,
+          Creator,
+          Relation,
+          OriginalDocument,
+          Corporate,
+          Publisher,
+          Series,
+          Rights,
+          Audience,
+          Note
+        ]
       }
-    });
-  
-    const types = await handleRelation(doc.type, Type, ['name', 'name']);
-    await document.addTypes(types);  
-  
-    if (doc.relationships.coverage) {
-      const coverages = await handleRelation(doc.relationships.coverage, Coverage, ['name', 'name']);
-      await document.addCoverages(coverages);  
-    }
-      
-    if (doc.relationships.contributors) {
-      const contributors = await handleRelation(doc.relationships.contributors, Contributor, ['name', 'name'], ['role', 'role']);
-      await document.addContributors(contributors);  
-    }
-  
-    if (doc.relationships.subcollection) {
-      const subcollections = await handleRelation(doc.relationships.subcollection, Subcollection, ['name', 'name']);
-      await document.addSubcollections(subcollections);  
-    }
-  
-    const [topics, subtopics] = await handleTopics(doc.relationships.topics);
-    await document.addSubtopics(subtopics);
-    try {
-      await document.addTopics(topics);
-    } catch (error) {
-      logger.error({ error }, 'Error while handling topics for document ' + doc.id);
-      throw error;
-    }
-    
-    logger.info({ documentId: doc.id, documentTitle: doc.title }, `Saved document ${doc.id}`)
-  } catch (error) {
-    logger.error({ error }, 'Error while loading document ' + doc.id + ' into db');
-    throw new Error(error.message);
-  }
-}
+    );
 
-export async function handleRelation (
-  inputData,
-  relationModel,
-  ...keyPairs
-) {
-  try {
-    const results = await Promise.all(inputData.map(async (relation) => {
-      const query = {};
-      for (const keyPair of keyPairs) {
-        Object.defineProperty(query, keyPair[0], {
-          value: relation[keyPair[1]],
-          enumerable: true
-        });
-      }
-  
-      const [relationInstance] = await relationModel.findOrCreate({
-        where: query,
-        defaults: query
-      });
-      return relationInstance;
-    }));
-    
-    return results;
+    logger.info({ documentId: doc.id, documentTitle: doc.title }, `Saved document ${document.id}`)
   } catch (error) {
-    logger.error({error}, 'Error while handling document relation: ' + relationModel);
-    throw error;
-  }
-}
-
-async function handleTopics (inputData) {
-  try {
-    let subtopics = [];
-    // todo: look up ids and only findOrCreate with id. special characters may cause error. https://github.com/sequelize/sequelize/issues/7941
-    const topics = await Promise.all(inputData.map(async (topicData) => {
-      const [t] = await Topic.findOrCreate({
-        where: {
-          name: topicData.topic.name
-        },
-        defaults: {
-          name: topicData.topic.name
-        }
-      });
-  
-      const [subtopic] = await Subtopic.findOrCreate({
-        where: {
-          name: topicData.subtopic.name
-        },
-        defaults: {
-          name: topicData.subtopic.name
-        }
-      });
-      
-      if (await t.hasSubtopic(subtopic) === false) {
-        await t.addSubtopic(subtopic);
-      }
-  
-      subtopics.push(subtopic);
-  
-      return t;
-    }));
-
-    const uniqueTopics = getUniqueTopics(topics);
-    return [uniqueTopics, subtopics]
-  } catch (error) {
-    logger.error({error}, 'Error while handling topic creation');
+    logger.error({ errorDetails: error }, 'Error while loading document ' + doc.id + ' into db');
     throw error
   }
-}
-
-export function getUniqueTopics (arr) {
-  const uniqueTopics = [arr[0]];
-  for (let i = 1; i < arr.length; i++) {
-    let unique = true;
-
-    for (let j = 0; j < uniqueTopics.length; j++) {
-      if (uniqueTopics[j].id === arr[i].id) {
-        unique = false;
-        break;
-      }
-    }
-    if (unique) {
-      uniqueTopics.push(arr[i])
-    }
-  }
-  return uniqueTopics;
 }

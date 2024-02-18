@@ -1,12 +1,13 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+dotenv.config()
 import { Sequelize } from "sequelize";
 
 export const sequelize = new Sequelize({
   dialect: 'postgres',
-  host: process.env.SCRAPER_DB_HOST,
-  port: +process.env.SCRAPER_DB_PORT,
-  username: process.env.SCRAPER_DB_USERNAME,
-  password: process.env.SCRAPER_DB_PASSWORD,
-  database: process.env.SCRAPER_DB_NAME,
+  host: process.env.SCRAPER_DB_HOST || 'localhost',
+  port: +process.env.SCRAPER_DB_PORT || 5432,
+  username: process.env.SCRAPER_DB_USERNAME || 'matyi',
+  password: process.env.SCRAPER_DB_PASSWORD || 'James',
+  database: process.env.SCRAPER_DB_NAME || 'dka_dev',
   logging: false
 });

@@ -1,13 +1,12 @@
-const fs = require('fs');
+import fs from 'node:fs'
 import * as  cheerio from 'cheerio';
-const axios = require('axios').default;
+import axios from 'axios'
 
-import { AxiosResponse } from "axios";
-import { DkaDocument } from '../entities';
-import { sequelize } from '../db';
-import { logger } from '../util/logger';
+import { DkaDocument } from '../entities/document.entity.js';
+import { sequelize } from '../db.js';
+import { logger } from '../util/logger.js';
 
-export function transformToId (id: number): string {
+export function transformToId (id) {
   const ID_LENGTH = 6;
   const inputLength = id.toString().length;
   const zeroes = [];
@@ -19,7 +18,7 @@ export function transformToId (id: number): string {
   return `${zeroes.join('')}${id}`;
 };
 
-export const logValidationError = (id: string, err: Error) => {
+export const logValidationError = (id, err) => {
   const log = `
     -----------------------------------------
     ${new Date().toDateString()}
@@ -29,16 +28,16 @@ export const logValidationError = (id: string, err: Error) => {
     -----------------------------------------
     `;
     
-    fs.appendFileSync('./log.txt', log, 'utf-8', (e: Error) => {
+    fs.appendFileSync('./log.txt', log, 'utf-8', (e) => {
       if (e) logger.error(e);
     });
 }
 
 
-export async function findLastScrapedId (): Promise<number> {
+export async function findLastScrapedId () {
   try {
     await sequelize.sync({ force: false });
-    const lastDoc: any = await DkaDocument.findAll({
+    const lastDoc = await DkaDocument.findAll({
       attributes: ['id'],
       order: [['id', 'DESC']],
       limit: 1
@@ -47,46 +46,46 @@ export async function findLastScrapedId (): Promise<number> {
     return lastDoc[0]?.id ?? 0;
   } catch (error) {
     logger.error({ error },'Error while trying to find last scraped document\'s id');
-    throw new Error('Error while trying to find last scraped document\'s id');
+    throw error
   }
 }
 
-export async function getLatestDocumentId (): Promise<number> {
+export async function getLatestDocumentId () {
   const numberOfDocs = await getNumberOfDocs();
   const offset = getLargestOffsetForDocs(numberOfDocs);
   return await getLastDocId(numberOfDocs, offset)
 }
 
-async function getLastDocId (numberOfDocs:string, offset: string): Promise<number> {
+async function getLastDocId (numberOfDocs, offset) {
   try {
     const nthOfLastElement = numberOfDocs.slice(-2);
-    const response: AxiosResponse = await axios.get(`https://dka.oszk.hu/kereses/lista.phtml?offset=${offset}`);
+    const response = await axios.get(`https://dka.oszk.hu/kereses/lista.phtml?offset=${offset}`);
     const $ = cheerio.load(response.data);  
     const urlOfLastDoc = $(`body > center > table:nth-child(4) > tbody > tr:nth-child(${nthOfLastElement}) > td > a`).attr('href');
     const numberString = getNumbersFromString(urlOfLastDoc);
     return Number(numberString);
-  } catch (error: unknown) {
-    logger.error({error}, 'Error while getting last doc id');
-    throw new Error((error as Error).message);
+  } catch (error) {
+    logger.error({errorDetails: error}, 'Error while getting last doc id');
+    throw error
   }
 }
 
-async function getNumberOfDocs (): Promise<string> {
+async function getNumberOfDocs () {
   try {
-    const response: AxiosResponse = await axios.get('https://dka.oszk.hu/kereses/lista.phtml');
+    const response = await axios.get('https://dka.oszk.hu/kereses/lista.phtml');
     const $ = cheerio.load(response.data);
     const string = $('b:first-child').text();
     return getNumbersFromString(string);
-  } catch (error: unknown) {
-    logger.error({error}, 'Error while getting number of docs');
-    throw new Error((error as Error).message);
+  } catch (error) {
+    logger.error({errorDetails: error}, 'Error while getting number of docs');
+    throw error
   }
 }
 
-function getLargestOffsetForDocs (numberOfDocs: string): string {
+function getLargestOffsetForDocs (numberOfDocs) {
   return numberOfDocs.slice(0, -2) + '00';
 }
 
-function getNumbersFromString (str: string): string {
+function getNumbersFromString (str) {
   return str.replace(/^\D+/g, '');
 }
