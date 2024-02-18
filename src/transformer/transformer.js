@@ -1,9 +1,10 @@
-import { mockParsedXmlData } from './transformer2.mock.js'
+import { toLowerCaseFirstChar, convertKeyWithUnderscore } from '../util/string-transform.js'
 
-function transform (input) {
+export function transform (input) {
   const data = input.dkalista.DKA
   const transformed = {}
   convertKeys(data, transformed)
+  addId(transformed)
   return transformed
 }
 
@@ -34,26 +35,7 @@ function convertKeys (data, output) {
   }
 }
 
-function toLowerCaseFirstChar (key) {
-  if (key === 'DKAtitle') {
-    return 'dkaTitle'
-  }
-  if (key === 'URLOfDoc') {
-    return 'urlOfDoc'
-  }
-  const arr = key.split('')
-  arr[0] = arr[0].toLowerCase()
-  return arr.join('')
+function addId(transformedData) {
+  const url = transformedData.identifier.urlOfDoc
+  transformedData.id = parseInt(url.substring(url.lastIndexOf('/') + 1))
 }
-
-/**
-  * Converts `data_key` to `dataKey`
-  */
-  function convertKeyWithUnderscore (key) {
-    function upperCase (match, p1, offset, string) {
-      return p1.toUpperCase()
-    }
-    return key.replace(/_([a-zA-Z])/g, upperCase)
-  }
-
-console.log(transform(mockParsedXmlData))
