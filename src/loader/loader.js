@@ -32,6 +32,7 @@ import { sequelize } from "../db.js";
 import { logger } from '../util/logger.js';
 
 export async function loadIntoDataBase (originalDoc) {
+  console.log(originalDoc)
   const doc = transform(originalDoc);
   console.log(doc)
   try {
