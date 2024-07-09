@@ -12,6 +12,13 @@ function convertKeys (data, output) {
   for (let [k,v] of Object.entries(data)) {
     k = toLowerCaseFirstChar(k)
     k = convertKeyWithUnderscore(k)
+    
+    // unique treatment for `type` property, since it's an array of strings, not objects
+    const convertedTypes = convertTypes(k, v, output)
+    if (convertedTypes) {
+      continue
+    }
+
     if (Array.isArray(v)) {
       output[k] = []
       v.forEach((val, i) => {
@@ -39,3 +46,16 @@ function addId(transformedData) {
   const url = transformedData.identifier.urlOfDoc
   transformedData.id = parseInt(url.substring(url.lastIndexOf('/') + 1))
 }
+
+function convertTypes(k, v, output) {
+  if (k === 'type') {
+    if (Array.isArray(v.NameOfType)) {
+      output[k] = v.NameOfType.map(type => ({ nameOfType: type._text }))
+    } else {
+      output[k] = [{nameOfType: v.NameOfType._text}]
+    }
+    return true
+  }
+  return false
+}
+
