@@ -146,7 +146,7 @@ DkaDocument.belongsToMany(Contributor, { through: CONTRIBUTOR_JUNCTION_TABLE })
 Contributor.belongsToMany(DkaDocument, { through: CONTRIBUTOR_JUNCTION_TABLE })
 
 // one to one
-export const Date = sequelize.define('date', {
+export const DateModel = sequelize.define('dateModel', {
   pevent: {
     type: DataTypes.TEXT,
     allowNull: false
@@ -164,19 +164,20 @@ export const Date = sequelize.define('date', {
     allowNull: true
   }
 }, {
-  modelName: 'date',
+  modelName: 'dateModel',
   timestamps: false,
-  tableName: 'date',
+  tableName: 'dateModel',
   freezeTableName: true
 });
-DkaDocument.hasMany(Date)
-Date.belongsTo(DkaDocument)
+DkaDocument.hasMany(DateModel)
+DateModel.belongsTo(DkaDocument)
 
 // many to many
 export const Type = sequelize.define('type', {
   nameOfType: {
     type: DataTypes.TEXT,
-    allowNull: true
+    allowNull: false,
+    unique: true
   }
 }, {
   modelName: 'type',
@@ -322,7 +323,11 @@ export const Format = sequelize.define('format', {
   noteForMetadata: {
     type: DataTypes.TEXT,
     allowNull: true
-  }
+  },
+  partNumber: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
 }, {
   modelName: 'format',
   timestamps: false,
@@ -448,6 +453,10 @@ export const Creator = sequelize.define('creator', {
     allowNull: true
   },
   creatorOtherName2: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
+  creatorYears: {
     type: DataTypes.TEXT,
     allowNull: true
   }

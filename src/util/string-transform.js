@@ -20,3 +20,10 @@ export function convertKeyWithUnderscore (key) {
   }
   return key.replace(/_([a-zA-Z])/g, upperCase)
 }
+
+/**
+  * @param {string} str
+  */
+export function capitalize (str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

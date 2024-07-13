@@ -2,16 +2,12 @@ import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../db.js';
 
-export class DkaDocument extends Model {}
-
-DkaDocument.init({
+export const DkaDocument = sequelize.define('document', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
   },
 }, {
-  sequelize,
-  modelName: 'document',
   timestamps: false,
   tableName: 'document',
   freezeTableName: true,
