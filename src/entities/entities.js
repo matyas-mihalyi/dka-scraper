@@ -326,7 +326,7 @@ export const Format = sequelize.define('format', {
   },
   partNumber: {
     type: DataTypes.TEXT,
-    allowNull: tru
+    allowNull: true
   },
 }, {
   modelName: 'format',
