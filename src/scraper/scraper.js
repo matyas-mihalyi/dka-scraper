@@ -59,7 +59,7 @@ export async function scrapeDocuments () {
     const [from, to] = await findIdsToScrape();
     await scrape(from, to);
   } catch (error) {
-    logger.error({ error }, 'Error while scraping documents');
+    logger.error({ error: error.message }, 'Error while scraping documents');
     throw error;
   }
 }

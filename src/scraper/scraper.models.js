@@ -84,7 +84,8 @@ const Description = Joi.object({
 const Format = Joi.object({
   FormatName: TextData,
   Metadata: TextData,
-  NoteForMetadata: TextData.optional()
+  NoteForMetadata: TextData.optional(),
+  PartNumber: TextData.optional()
 });
 
 const Quality = Joi.object({
