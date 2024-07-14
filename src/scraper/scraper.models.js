@@ -36,6 +36,7 @@ const Contributor = Joi.object({
   ContributorOtherNameElement: TextData.optional(),
   ContributorOtherName1: TextData.optional(),
   ContributorOtherName2: TextData.optional(),
+  ContributorYears: TextData.optional(),
 });
 
 const Dates = Joi.object({
