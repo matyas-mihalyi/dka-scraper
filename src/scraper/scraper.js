@@ -7,7 +7,7 @@ import { loadIntoDataBase } from "../loader/loader.js";
 import { logger } from "../util/logger.js"
 import { sleep } from "../util/sleep.js"
 
-const SLEEP_BETWEEN_DOCS = process.env.SCRAPER_SLEEP_BETWEEN_DOCS ?? 3000
+const SLEEP_BETWEEN_DOCS = process.env.SCRAPER_SLEEP_BETWEEN_DOCS ?? 500
 
 async function getParsedXml (id) {
   try {

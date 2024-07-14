@@ -5,6 +5,12 @@ export function toLowerCaseFirstChar (key) {
   if (key.includes('URL')) {
     return key.replace('URL', 'url')
   }
+  if (key === 'CCCode') {
+    return 'ccCode'
+  }
+  if (key === 'OCRText') {
+    return 'ocrText'
+  }
   const arr = key.split('')
   arr[0] = arr[0].toLowerCase()
   return arr.join('')

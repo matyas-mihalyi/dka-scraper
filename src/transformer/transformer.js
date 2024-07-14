@@ -12,6 +12,7 @@ function convertKeys (data, output) {
   for (let [k,v] of Object.entries(data)) {
     k = toLowerCaseFirstChar(k)
     k = convertKeyWithUnderscore(k)
+    k = fixTypos(k)
     
     // unique treatment for `type` property, since it's an array of strings, not objects
     const convertedTypes = convertTypes(k, v, output)
@@ -57,5 +58,12 @@ function convertTypes(k, v, output) {
     return true
   }
   return false
+}
+
+function fixTypos(k) {
+  if (k === 'palceOfMester') {
+    return 'placeOfMester'
+  }
+  return k
 }
 
