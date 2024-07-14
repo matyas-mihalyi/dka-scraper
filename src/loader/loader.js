@@ -97,6 +97,7 @@ export async function loadIntoDataBase (originalDoc) {
     logger.info({ documentId: doc.id, documentTitle: doc.title }, `Saved document ${document.id}`)
   } catch (error) {
     logger.error({ errorDetails: error }, 'Error while loading document ' + doc.id + ' into db');
+    // write id to file
     throw error
   }
 }

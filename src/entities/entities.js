@@ -1,4 +1,4 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize'
 import { sequelize } from '../db.js';
 import { AUDIENCE_JUNCTION_TABLE, NOTE_JUNCTION_TABLE, TYPE_JUNCTION_TABLE, SOURCE_JUNCTION_TABLE, RIGHTS_JUNCTION_TABLE, TOPIC_JUNCTION_TABLE, SUBJECT_JUNCTION_TABLE, COVERAGE_JUNCTION_TABLE, CONTRIBUTOR_JUNCTION_TABLE, CONTRIBUTOR_CORP_JUNCTION_TABLE, SUBCOLLECTION_JUNCTION_TABLE, OPERATOR_JUNCTION_TABLE, RELATION_JUNCTION_TABLE, CREATOR_JUNCTION_TABLE, STATUS_JUNCTION_TABLE, FORMAT_JUNCTION_TABLE, CORPORATE_JUNCTION_TABLE, PUBLISHER_JUNCTION_TABLE, SERIES_JUNCTION_TABLE } from './constants.js';
 import { DkaDocument } from './document.entity.js'
@@ -150,7 +150,7 @@ DkaDocument.belongsToMany(Contributor, { through: CONTRIBUTOR_JUNCTION_TABLE })
 Contributor.belongsToMany(DkaDocument, { through: CONTRIBUTOR_JUNCTION_TABLE })
 
 // one to one
-export const DateModel = sequelize.define('dateModel', {
+export const DateModel = sequelize.define('date', {
   pevent: {
     type: DataTypes.TEXT,
     allowNull: false
@@ -220,7 +220,11 @@ export const Source = sequelize.define('source', {
   urlOfSource: {
     type: DataTypes.TEXT,
     allowNull: true
-  }
+  },
+  noteOfSource: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
 }, {
   modelName: 'source',
   timestamps: false,
@@ -329,6 +333,10 @@ export const Format = sequelize.define('format', {
     allowNull: true
   },
   partNumber: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
+  pageNumber: {
     type: DataTypes.TEXT,
     allowNull: true
   },
