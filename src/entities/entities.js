@@ -135,6 +135,10 @@ export const Contributor = sequelize.define('contributor', {
   contributorOtherName2: {
     type: DataTypes.TEXT,
     allowNull: true
+  },
+  contributorYears: {
+    type: DataTypes.TEXT,
+    allowNull: true
   }
 }, {
   modelName: 'contributor',
