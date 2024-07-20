@@ -25,6 +25,19 @@ async function getParsedXml (id) {
   }
 }
 
+/**
+  * @param {Array.<string>} list
+  */
+async function scrapeList(list) {
+  for (const id of list) {
+    const dkaDocument = await getParsedXml(id);
+    if (dkaDocument) {
+      await loadIntoDataBase(dkaDocument);
+      await sleep(SLEEP_BETWEEN_DOCS);
+    }
+  }
+}
+
 async function scrape (from, to) {
   logger.info({ from, to }, 'Scraping documents')
   for (let id = from; id < to; id++) {
@@ -42,7 +55,7 @@ async function findIdsToScrape () {
   const lastIdInDb = await findLastScrapedId();
 
   const from = lastIdInDb + 1;
-  const to = lastAvailableDocId - lastIdInDb > MAX_RECORDS ?
+  const to = lastAvailableDocId - lastIdInDb > +MAX_RECORDS ?
     lastIdInDb + +MAX_RECORDS 
     :
     lastAvailableDocId;
@@ -54,10 +67,17 @@ async function findIdsToScrape () {
   return [from, to];
 }
 
-export async function scrapeDocuments () {
+/**
+  * @param {Array.<string>} [list]
+  */
+export async function scrapeDocuments(list) {
   try {
-    const [from, to] = await findIdsToScrape();
-    await scrape(from, to);
+    if (list?.length > 0) {
+      await scrapeList(list)
+    } else {
+      const [from, to] = await findIdsToScrape();
+      await scrape(from, to);
+    }
   } catch (error) {
     logger.error({ error: error.message }, 'Error while scraping documents');
     throw error;
