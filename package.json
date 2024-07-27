@@ -7,7 +7,9 @@
   "scripts": {
     "test": "node --test",
     "dev": "node --watch ./src/main.js | pino-pretty",
-    "start": "node ./src/main.js"
+    "start": "node ./src/main.js",
+    "start:fix": "node ./src/main.js --fix",
+    "dev:fix": "node ./src/main.js --fix | pino-pretty"
   },
   "keywords": [],
   "author": "",

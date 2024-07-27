@@ -88,6 +88,7 @@ async function createAndAddAssociation(associationAttributes, associationModel, 
   * @param {Object.<string, any>} doc
   */
 async function logError(error, doc) {
+  logger.error(error)
   fs.appendFileSync(new URL('../../errors/failed-ids.txt', import.meta.url), doc.id + ',')
   const log = {
     document: doc,
