@@ -1,3 +1,4 @@
+import fs from 'fs'
 import { transform } from '../transformer/transformer.js'
 import { capitalize } from '../util/string-transform.js'
 import { DkaDocument } from '../entities/document.entity.js'
@@ -82,6 +83,23 @@ async function createAndAddAssociation(associationAttributes, associationModel, 
   }
 }
 
+/**
+  * @param {import('sequelize').ValidationError} error
+  * @param {Object.<string, any>} doc
+  */
+async function logError(error, doc) {
+  logger.error(error)
+  fs.appendFileSync(new URL('../../errors/failed-ids.txt', import.meta.url), doc.id + ',')
+  const log = {
+    document: doc,
+    error: {
+      name: error.name,
+      message: error.message,
+    }
+  }
+  fs.writeFileSync(new URL(`../../errors/${doc.id}.json`, import.meta.url), JSON.stringify(log, null, 2))
+}
+
 export async function loadIntoDataBase (originalDoc) {
   const doc = transform(originalDoc);
   try {
@@ -96,8 +114,7 @@ export async function loadIntoDataBase (originalDoc) {
     }
     logger.info({ documentId: doc.id, documentTitle: doc.title }, `Saved document ${document.id}`)
   } catch (error) {
-    logger.error({ errorDetails: error }, 'Error while loading document ' + doc.id + ' into db');
-    // write id to file
-    throw error
+    logger.error('Error while loading document ' + doc.id + ' into db');
+    logError(error, doc)
   }
 }

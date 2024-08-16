@@ -606,14 +606,14 @@ export const Publisher = sequelize.define('publisher', {
   tableName: 'publisher',
   freezeTableName: true
 });
-Publisher.belongsTo(DkaDocument, { through: PUBLISHER_JUNCTION_TABLE })
-DkaDocument.belongsTo(Publisher, { through: PUBLISHER_JUNCTION_TABLE })
+Publisher.belongsToMany(DkaDocument, { through: PUBLISHER_JUNCTION_TABLE })
+DkaDocument.belongsToMany(Publisher, { through: PUBLISHER_JUNCTION_TABLE })
 
 // Series model
 export const Series = sequelize.define('series', {
   nameOfSource: {
     type: DataTypes.TEXT,
-    allowNull: false
+    allowNull: true
   },
   urlOfSource: {
     type: DataTypes.TEXT,
@@ -622,9 +622,12 @@ export const Series = sequelize.define('series', {
   noteOfSource: {
     type: DataTypes.TEXT,
     allowNull: true
+  },
+  titleOfSeries: {
+    type: DataTypes.TEXT,
+    allowNull: true
   }
 }, {
-  modelName: 'series',
   timestamps: false,
   tableName: 'series',
   freezeTableName: true
