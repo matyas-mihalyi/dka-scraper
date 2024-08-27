@@ -8,15 +8,15 @@ import { loadIntoDataBase } from "../loader/loader.js";
 import { logger } from "../util/logger.js"
 import { sleep } from "../util/sleep.js"
 
-const SLEEP_BETWEEN_DOCS = process.env.SCRAPER_SLEEP_BETWEEN_DOCS ?? 500
+const SLEEP_BETWEEN_DOCS = process.env.SCRAPER_SLEEP_BETWEEN_DOCS ?? 0
 
-async function getParsedXml (id) {
+async function getParsedXml(id) {
   try {
     const docId = transformToId(id);
     const res = await axios.get(BASE_URL + docId + '.xml');
     const xml = await res.data;
     const parsedXml = xml2js(xml, { compact: true });
-    
+
     OriginalSchema.validate(parsedXml);
     return parsedXml;
   }
@@ -39,14 +39,14 @@ async function scrapeList(list) {
       }
       fs.unlink(new URL(`../../errors/${id}.json`, import.meta.url), (err, _res) => {
         if (err) {
-          logger.error(`Cannot remove error log for document ${id}`, {errorDetails: err})
+          logger.error(`Cannot remove error log for document ${id}`, { errorDetails: err })
         }
       })
       const listOfFailedDocIds = new URL('../../errors/failed-ids.txt', import.meta.url)
       const newList = fs.readFileSync(listOfFailedDocIds).toString().replaceAll(`${id},`, '')
       fs.writeFile(listOfFailedDocIds, newList, (err, _res) => {
         if (err) {
-          logger.error(`Cannot remove document ${id} from failed ids list`, {errorDetails: err})
+          logger.error(`Cannot remove document ${id} from failed ids list`, { errorDetails: err })
         }
       })
     } catch (err) {
@@ -55,7 +55,7 @@ async function scrapeList(list) {
   }
 }
 
-async function scrape (from, to) {
+async function scrape(from, to) {
   logger.info({ from, to }, 'Scraping documents')
   for (let id = from; id < to; id++) {
     const dkaDocument = await getParsedXml(id);
@@ -67,13 +67,13 @@ async function scrape (from, to) {
   logger.info('Finished scraping...')
 }
 
-async function findIdsToScrape () {
+async function findIdsToScrape() {
   const lastAvailableDocId = await getLatestDocumentId();
   const lastIdInDb = await findLastScrapedId();
 
   const from = lastIdInDb + 1;
   const to = lastAvailableDocId - lastIdInDb > +MAX_RECORDS ?
-    lastIdInDb + +MAX_RECORDS 
+    lastIdInDb + +MAX_RECORDS
     :
     lastAvailableDocId;
 
@@ -87,16 +87,16 @@ async function findIdsToScrape () {
 /**
   * @param {Array.<string>} [list]
   */
-  export async function scrapeDocuments(list) {
-    try {
-      if (list?.length > 0) {
-        await scrapeList(list)
-      } else {
-        const [from, to] = await findIdsToScrape();
-        await scrape(from, to);
-      }
-    } catch (error) {
-      logger.error({ error: error.message }, 'Error while scraping documents');
-      throw error;
+export async function scrapeDocuments(list) {
+  try {
+    if (list?.length > 0) {
+      await scrapeList(list)
+    } else {
+      const [from, to] = await findIdsToScrape();
+      await scrape(from, to);
     }
+  } catch (error) {
+    logger.error({ error: error.message }, 'Error while scraping documents');
+    throw error;
+  }
   }

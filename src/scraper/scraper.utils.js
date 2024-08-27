@@ -6,7 +6,7 @@ import { DkaDocument } from '../entities/document.entity.js';
 import { sequelize } from '../db.js';
 import { logger } from '../util/logger.js';
 
-export function transformToId (id) {
+export function transformToId(id) {
   const ID_LENGTH = 6;
   const inputLength = id.toString().length;
   const zeroes = [];
@@ -27,14 +27,12 @@ export const logValidationError = (id, err) => {
     ${err}
     -----------------------------------------
     `;
-    
-    fs.appendFileSync('./log.txt', log, 'utf-8', (e) => {
-      if (e) logger.error(e);
-    });
+
+  fs.appendFileSync('./log.txt', log, 'utf-8');
 }
 
 
-export async function findLastScrapedId () {
+export async function findLastScrapedId() {
   try {
     await sequelize.sync({ force: false });
     const lastDoc = await DkaDocument.findAll({
@@ -45,47 +43,47 @@ export async function findLastScrapedId () {
     logger.info('Last scraper document id is ' + lastDoc[0]?.id);
     return lastDoc[0]?.id ?? 0;
   } catch (error) {
-    logger.error({ error },'Error while trying to find last scraped document\'s id');
+    logger.error({ error }, 'Error while trying to find last scraped document\'s id');
     throw error
   }
 }
 
-export async function getLatestDocumentId () {
+export async function getLatestDocumentId() {
   const numberOfDocs = await getNumberOfDocs();
   const offset = getLargestOffsetForDocs(numberOfDocs);
   return await getLastDocId(numberOfDocs, offset)
 }
 
-async function getLastDocId (numberOfDocs, offset) {
+async function getLastDocId(numberOfDocs, offset) {
   try {
     const nthOfLastElement = numberOfDocs.slice(-2);
     const response = await axios.get(`https://dka.oszk.hu/kereses/lista.phtml?offset=${offset}`);
-    const $ = cheerio.load(response.data);  
+    const $ = cheerio.load(response.data);
     const urlOfLastDoc = $(`body > center > table:nth-child(4) > tbody > tr:nth-child(${nthOfLastElement}) > td > a`).attr('href');
     const numberString = getNumbersFromString(urlOfLastDoc);
     return Number(numberString);
   } catch (error) {
-    logger.error({errorDetails: error}, 'Error while getting last doc id');
+    logger.error({ errorDetails: error }, 'Error while getting last doc id');
     throw error
   }
 }
 
-async function getNumberOfDocs () {
+async function getNumberOfDocs() {
   try {
     const response = await axios.get('https://dka.oszk.hu/kereses/lista.phtml');
     const $ = cheerio.load(response.data);
     const string = $('b:first-child').text();
     return getNumbersFromString(string);
   } catch (error) {
-    logger.error({errorDetails: error}, 'Error while getting number of docs');
+    logger.error({ errorDetails: error }, 'Error while getting number of docs');
     throw error
   }
 }
 
-function getLargestOffsetForDocs (numberOfDocs) {
+function getLargestOffsetForDocs(numberOfDocs) {
   return numberOfDocs.slice(0, -2) + '00';
 }
 
-function getNumbersFromString (str) {
+function getNumbersFromString(str) {
   return str.replace(/^\D+/g, '');
 }

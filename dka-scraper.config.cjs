@@ -1,4 +1,4 @@
-export default pm2Config = {
+module.exports = {
   apps : [{
     name   : "DKA_SCRAPER",
     script : "npm",
