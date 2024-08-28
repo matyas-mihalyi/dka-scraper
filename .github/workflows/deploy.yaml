@@ -20,6 +20,8 @@ jobs:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.TARGET }}
           SCRIPT_AFTER:
+            whoami;
+            node -v;
             cd /home/${{ secrets.REMOTE_USER }}/scraper;
             npm ci;
             pm2 start /home/${{ secrets.REMOTE_USER }}/scraper/dka-scraper.config.cjs;
