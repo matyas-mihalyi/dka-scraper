@@ -1,8 +1,9 @@
 name: Deploy
 run-name: Deploying to VPS
-on:
-  release:
-    types: [published]
+on: [push]
+# on:
+#  release:
+#    types: [published]
 
 jobs:
   deploy:
@@ -10,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Deploy
-        uses: easingthemes/ssh-deploy@4.1.10
+        uses: easingthemes/ssh-deploy@4.1.9
         with:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           ARGS: "-rlgoDzvc -i"
