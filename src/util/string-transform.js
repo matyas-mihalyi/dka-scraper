@@ -1,4 +1,4 @@
-export function toLowerCaseFirstChar (key) {
+export function toLowerCaseFirstChar(key) {
   if (key === 'DKAtitle') {
     return 'dkaTitle'
   }
@@ -20,8 +20,8 @@ export function toLowerCaseFirstChar (key) {
   * Converts `data_key` to `dataKey`
   * @param {string} key
   */
-export function convertKeyWithUnderscore (key) {
-  function upperCase (match, p1, offset, string) {
+export function convertKeyWithUnderscore(key) {
+  function upperCase(_match, p1) {
     return p1.toUpperCase()
   }
   return key.replace(/_([a-zA-Z])/g, upperCase)
@@ -30,6 +30,6 @@ export function convertKeyWithUnderscore (key) {
 /**
   * @param {string} str
   */
-export function capitalize (str) {
+export function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
