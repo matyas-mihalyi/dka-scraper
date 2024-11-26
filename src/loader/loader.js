@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fs, { existsSync } from 'fs'
 import { transform } from '../transformer/transformer.js'
 import { DkaDocument } from '../entities/document.entity.js'
 import {
@@ -66,7 +66,7 @@ const modelMap = {
 
 /**
   * @param {Object.<string, string>} associationAttributes
-  * @param {import('sequelize').ModelCtor<any>} associationModel
+  * @param {import('sequelize').ModelStatic<any>} associationModel
   * @param {import('../entities/document.entity.js').DkaDocument} document
   * @param {import('sequelize').Transaction} transaction
   */
@@ -88,7 +88,17 @@ async function createAndAddAssociation(associationAttributes, associationModel, 
   */
 async function logError(error, doc) {
   logger.error(error)
-  fs.appendFileSync(new URL('../../errors/failed-ids.txt', import.meta.url), doc.id + ',')
+  const folderURL = new URL('../../errors/', import.meta.url)
+  if (!existsSync(folderURL)) {
+    fs.mkdirSync(folderURL)
+  }
+  fs.appendFile(new URL('../../errors/failed-ids.txt', import.meta.url), doc.id + ',', (err, res) => {
+    if (err) {
+      return logger.error(`Error while adding id to list: ${err}`)
+    }
+    logger.info('Finished adding id to list')
+    return logger.info(res)
+  })
   const log = {
     document: doc,
     error: {
@@ -96,7 +106,13 @@ async function logError(error, doc) {
       message: error.message,
     }
   }
-  fs.writeFileSync(new URL(`../../errors/${doc.id}.json`, import.meta.url), JSON.stringify(log, null, 2))
+  fs.writeFile(new URL(`../../errors/${doc.id}.json`, import.meta.url), JSON.stringify(log, null, 2), (err, res) => {
+    if (err) {
+      return logger.error(`Error while logging error: ${err}`)
+    }
+    logger.info('Finished logging error')
+    return logger.info(res)
+  })
 }
 
 export async function loadIntoDataBase(originalDoc) {
