@@ -55,6 +55,10 @@ async function scrapeList(list) {
   }
 }
 
+/**
+  * @param{number} from
+  * @param{number} to
+  */
 async function scrape(from, to) {
   logger.info({ from, to }, 'Scraping documents')
   for (let id = from; id < to; id++) {
@@ -65,6 +69,7 @@ async function scrape(from, to) {
     }
   }
   logger.info('Finished scraping...')
+  process.exit(0)
 }
 
 async function findIdsToScrape() {

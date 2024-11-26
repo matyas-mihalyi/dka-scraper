@@ -8,3 +8,4 @@ errors
 coverage
 .vscode
 todo.md
+/db

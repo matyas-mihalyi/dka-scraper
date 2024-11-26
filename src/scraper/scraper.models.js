@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-const TextData = Joi.object({_text: Joi.string().required()});
+const TextData = Joi.object({ _text: Joi.string().required() });
 
 const Identifier = Joi.object({
   URLOfDoc: TextData,
@@ -100,7 +100,7 @@ const Quality = Joi.object({
   CompressionQuality: TextData.optional(),
   NoteOfQuality: TextData.optional()
 })
-.optional();
+  .optional();
 
 const Status = Joi.object({
   StatusOfRecord: TextData,
@@ -146,32 +146,32 @@ const Corporate = Joi.object({
   SortOfCorporate: TextData.optional(),
   RoleOfCorporate: TextData.optional(),
   CorporateName: TextData,
-  PlaceOfCorporate: TextData.optional(),	
+  PlaceOfCorporate: TextData.optional(),
   CountryOfCorporate: TextData.optional(),
 })
 
 const Publisher = Joi.object({
-  PublisherName	: TextData, 
-  PublisherPlace: TextData.optional()	,
+  PublisherName: TextData,
+  PublisherPlace: TextData.optional(),
   CountryCode: TextData.optional()
 })
 
 const Series = Joi.object({
-  NameOfSource: TextData,	
+  NameOfSource: TextData,
   URLOfSource: TextData.optional(),
-  NoteOfSource: TextData.optional()	
+  NoteOfSource: TextData.optional()
 })
 
 const Rights = Joi.object({
   OwnerOfRights: TextData.optional(),
   YearOfRights: TextData.optional(),
   NoteOfRights: TextData.optional(),
-  CCCode: TextData.optional() 
+  CCCode: TextData.optional()
 })
 
 const Audience = Joi.object({
-  Audience: TextData,	
-  AudienceRefinement: TextData.optional()	
+  Audience: TextData,
+  AudienceRefinement: TextData.optional()
 })
 
 const Note = Joi.object({
@@ -180,7 +180,7 @@ const Note = Joi.object({
 })
 
 /**
-  * @type{Joi}
+  * @type{Joi.ObjectSchema}
   */
 export const OriginalSchema = Joi.object({
   dkalista: Joi.object({

@@ -1,5 +1,8 @@
+import dotenv from 'dotenv'
+dotenv.config()
 import { readFileSync } from 'fs'
 import { scrapeDocuments } from './scraper/scraper.js';
+import { sequelize } from './db.js';
 
 let list
 const isRerun = process.argv[2] == '--fix'
@@ -8,4 +11,4 @@ if (isRerun) {
   list = readFileSync(listOfFailedDocIds).toString().split(',')
   list.pop() // remove last item, result of trailing comma
 }
-scrapeDocuments(list)
+scrapeDocuments(list).then(() => sequelize.close())
