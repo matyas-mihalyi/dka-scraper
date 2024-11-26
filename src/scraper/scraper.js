@@ -37,14 +37,14 @@ async function scrapeList(list) {
         await loadIntoDataBase(dkaDocument);
         await sleep(SLEEP_BETWEEN_DOCS);
       }
-      fs.unlink(new URL(`../../errors/${id}.json`, import.meta.url), (err, _res) => {
+      fs.unlink(new URL(`../../errors/${id}.json`, import.meta.url), (err) => {
         if (err) {
           logger.error(`Cannot remove error log for document ${id}`, { errorDetails: err })
         }
       })
       const listOfFailedDocIds = new URL('../../errors/failed-ids.txt', import.meta.url)
       const newList = fs.readFileSync(listOfFailedDocIds).toString().replaceAll(`${id},`, '')
-      fs.writeFile(listOfFailedDocIds, newList, (err, _res) => {
+      fs.writeFile(listOfFailedDocIds, newList, (err) => {
         if (err) {
           logger.error(`Cannot remove document ${id} from failed ids list`, { errorDetails: err })
         }
@@ -104,4 +104,4 @@ export async function scrapeDocuments(list) {
     logger.error({ error: error.message }, 'Error while scraping documents');
     throw error;
   }
-  }
+}
