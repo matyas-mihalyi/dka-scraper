@@ -1,11 +1,14 @@
 name: Deploy
 run-name: Deploying to VPS
 on:
-  release:
-    types: [published]
+  pull_request:
+    branches:
+      - master
+    types: [closed]
 
 jobs:
-  deploy:
+  if_merged:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@main
@@ -18,8 +21,6 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: ${{ secrets.TARGET }}
-          SCRIPT_AFTER:
-            cd /home/${{ secrets.REMOTE_USER }}/scraper;
+          SCRIPT_AFTER: cd /home/${{ secrets.REMOTE_USER }}/scraper;
             ./start-scraper.sh
           SCRIPT_AFTER_REQUIRED: true
-
