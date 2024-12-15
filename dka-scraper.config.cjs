@@ -1,4 +1,3 @@
-// pm2 config file 
 module.exports = {
   apps : [{
     name   : "DKA_SCRAPER",

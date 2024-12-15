@@ -1,12 +1,10 @@
-require('dotenv').config()
+import dotenv from 'dotenv'
+dotenv.config()
+import { fileURLToPath } from 'url'
 import { Sequelize } from "sequelize";
 
 export const sequelize = new Sequelize({
-  dialect: 'postgres',
-  host: process.env.SCRAPER_DB_HOST,
-  port: +process.env.SCRAPER_DB_PORT,
-  username: process.env.SCRAPER_DB_USERNAME,
-  password: process.env.SCRAPER_DB_PASSWORD,
-  database: process.env.SCRAPER_DB_NAME,
+  dialect: 'sqlite',
+  storage: fileURLToPath(new URL(process.env.SCRAPER_DB, import.meta.url).toString()),
   logging: false
 });

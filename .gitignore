@@ -3,7 +3,9 @@ node_modules
 .env.*
 !.env.example
 dist
+errors
 *.txt
 coverage
 .vscode
 todo.md
+/db

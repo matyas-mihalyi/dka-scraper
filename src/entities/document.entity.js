@@ -1,51 +1,17 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes } from 'sequelize';
 
-import { sequelize } from '../db';
-import { DOCUMENT_MODEL, DOCUMENT_TABLE } from './constants';
+import { sequelize } from '../db.js';
 
-export class DkaDocument extends Model {}
-
-DkaDocument.init({
+/**
+  * @type{import('sequelize').ModelStatic<any>}
+  */
+export const DkaDocument = sequelize.define('document', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
   },
-
-  img: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  
-  dates: {
-    type: DataTypes.JSONB,
-    allowNull: false
-  },
-
-  description: {
-    type: DataTypes.STRING(5000)
-  },
-
-  source: {
-    type: DataTypes.JSONB
-  },
-
-  creator: {
-    type: DataTypes.JSONB,
-  },
-
-  originalUrl: {
-    type: DataTypes.JSONB
-  }
-
 }, {
-  sequelize,
-  modelName: DOCUMENT_MODEL,
   timestamps: false,
-  tableName: DOCUMENT_TABLE,
+  tableName: 'document',
   freezeTableName: true,
 });

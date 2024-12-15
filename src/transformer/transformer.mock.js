@@ -1,6 +1,4 @@
-import { TOriginalSchema } from "../scraper/scraper.models";
-
-export const mockParsedXmlData: TOriginalSchema = 
+export const mockParsedXmlData = 
 {
   dkalista: {
     DKA: {
