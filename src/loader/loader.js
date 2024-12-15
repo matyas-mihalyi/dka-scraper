@@ -92,6 +92,7 @@ async function logError(error, doc) {
   if (!existsSync(folderURL)) {
     fs.mkdirSync(folderURL)
   }
+
   fs.appendFile(new URL('../../errors/failed-ids.txt', import.meta.url), doc.id + ',', (err, res) => {
     if (err) {
       return logger.error(`Error while adding id to list: ${err}`)
@@ -118,7 +119,7 @@ async function logError(error, doc) {
 export async function loadIntoDataBase(originalDoc) {
   const doc = transform(originalDoc);
   try {
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
     const [document] = await DkaDocument.findOrCreate({ where: { id: doc.id } });
     for (const [attr, model] of Object.entries(modelMap)) {
       await sequelize.transaction(async t => {
